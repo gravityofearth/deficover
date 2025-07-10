@@ -1,4 +1,5 @@
 import { /*Bounce, */ ToastOptions, toast, Flip, ToastContent } from "react-toastify";
+import { RiskLevelType } from "./data";
 const config: ToastOptions = {
   position: "top-center",
   autoClose: 5000,
@@ -27,4 +28,21 @@ export const showToast = (msg: ToastContent<unknown>, type: "info" | "error" | "
     // if (type === "error") {
     return toast.error(msg, { ...config, ...options });
   }
+}
+export const formatValueInLatin = (value: number) => {
+  if (value >= 1000000000) {
+    return (value / 1000000000).toFixed(1) + "B";
+  } else if (value >= 1000000) {
+    return (value / 1000000).toFixed(1) + "M";
+  } else if (value >= 1000) {
+    return (value / 1000).toFixed(1) + "K";
+  } else {
+    return value.toString();
+  }
+}
+
+export const riskStyle: { [key in RiskLevelType]: string } = {
+  "Low": "bg-[#6FB75D]/20 text-[#6FB75D]",
+  "Medium": "bg-[#D1A941]/20 text-[#D1A941]",
+  "High": "bg-[#C56565]/20 text-[#C56565]"
 }

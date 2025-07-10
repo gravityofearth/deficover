@@ -286,7 +286,7 @@ const ProfileCard = () => {
 
                     <div className="flex flex-col gap-2 items-start w-full">
                         <div className="font-medium">Phone Number</div>
-                        <input value={user && user !== "None" ? user.phoneNumber ?? "" : ""} type="text" className="w-full p-4 border-[1px] border-white/15 rounded-lg bg-white/3 font-medium" placeholder="+1 (555) 123-4567" />
+                        <input type="text" className="w-full p-4 border-[1px] border-white/15 rounded-lg bg-white/3 font-medium" placeholder="+1 (555) 123-4567" />
                     </div>
                 </div>
             </div>

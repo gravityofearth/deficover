@@ -1,19 +1,13 @@
 "use client"
+import Sidebar from "@/components/Sidebar";
 import { auth } from "@/services/firebase";
 import { useUser } from "@/store";
 import { signOut } from "firebase/auth";
 import Image from "next/image";
 import Link from "next/link";
-import { redirect, usePathname } from 'next/navigation'
-import { useEffect, useMemo } from "react";
-const SidebarItem = ({ title, icon, href }: { title: string, icon: string, href: string }) => {
-    const pathname = usePathname()
-    const isActive = useMemo(() => pathname === href, [pathname])
+import { redirect } from 'next/navigation'
+import { useEffect, useState } from "react";
 
-    return (
-        <Link href={href} className={`px-3 py-2 rounded-lg font-medium text-sm text-white/80 flex items-center tracking-[-0.03em] hover:underline ${isActive ? "bg-white/10" : ""}`} ><svg width={15} height={15} className="m-[2.5px]"><use href={`#svg-${icon}`} /></svg><span className="ml-[7.5px]">{title}</span></Link>
-    )
-}
 
 export default function AuthLayout({
     children,
@@ -21,6 +15,7 @@ export default function AuthLayout({
     children: React.ReactNode;
 }>) {
     const { user } = useUser()
+    const [showSidebar, setShowSidebar] = useState(false)
     const exit = () => {
         signOut(auth)
     }
@@ -34,10 +29,30 @@ export default function AuthLayout({
         <>
             {
                 user && user !== "None" &&
-                <div className="w-full min-h-[100vh] bg-[#050520] text-white">
+                <div className="w-full min-h-[100vh] bg-[#050520] text-white relative">
+                    {showSidebar &&
+                        <div onClick={() => setShowSidebar(false)} className="w-full h-full bg-black absolute left-0 right-0 top-0 bottom-0 z-50 flex flex-col justify-center items-center">
+                            <button onClick={() => setShowSidebar(false)} className="absolute right-2 top-2 cursor-pointer">X</button>
+                            <div className="max-w-[3/4] flex flex-col justify-center items-start">
+                                <Sidebar />
+                            </div>
+                            <div className="h-[88px] w-full bg-white/4 flex items-center justify-between border-t-[1px] border-white/20 bottom-0 absolute">
+                                <Image alt="user" src={user ? user.photoURL ?? "/user.png" : "/user.png"} height={40} width={40} className="rounded-full" />
+                                <div>
+                                    <div className="w-full flex flex-col">
+                                        <div className="font-medium text-sm">Josh Anderson</div>
+                                        <div className="font-medium text-xs text-[#525866]">josh@gmail.com</div>
+                                    </div>
+                                </div>
+                                <Link href="/profile" className="hover:bg-white/10 p-2 rounded-full">
+                                    <svg width={18} height={17}><use href="#svg-setting" /></svg>
+                                </Link>
+                            </div>
+                        </div>
+                    }
                     <div className="w-full px-8 py-3 bg-white/2 flex justify-between items-center border-b-[1px] border-white/15"> {/* header */}
                         <div className="flex gap-4">
-                            <button className="flex md:hidden justify-center items-center hover:cursor-pointer">
+                            <button onClick={() => setShowSidebar(true)} className="flex md:hidden justify-center items-center hover:cursor-pointer">
                                 <span className="text-xl scale-x-125">☰</span>
                             </button>
                             <Link href={"/"} className="flex items-center">
@@ -49,17 +64,12 @@ export default function AuthLayout({
                     <div className="flex h-[calc(100vh-67px)] "> {/* content */}
                         <div className="border-r-[1px] border-white/15 flex max-md:hidden flex-col justify-between"> {/* sidebar */}
                             <div className="w-[272px] bg-white/2 p-5 flex-1">
-                                <SidebarItem title="Overview" icon="overview" href="/overview" />
-                                <SidebarItem title="Insurance Pricing Index" icon="trendup" href="/ipi" />
-                                <SidebarItem title="Claims & Coverage Ratings" icon="shield" href="/iccr" />
-                                <SidebarItem title="Protocol Rating" icon="chart" href="/protocol-rating" />
-                                <SidebarItem title="Affiliates" icon="circle" href="/affiliates" />
-                                <SidebarItem title="Subscription" icon="wallet" href="/subscription" />
+                                <Sidebar />
                             </div>
                             <div className="flex justify-between ">
                                 <div className="w-5 bg-white/4"></div>
                                 <div className="h-[88px] w-full bg-white/4 flex items-center justify-between border-t-[1px] border-white/20">
-                                    <Image alt="user" src={"/user.png"} height={40} width={40} />
+                                    <Image alt="user" src={user ? user.photoURL ?? "/user.png" : "/user.png"} height={40} width={40} className="rounded-full" />
                                     <div>
                                         <div className="w-full flex flex-col">
                                             <div className="font-medium text-sm">Josh Anderson</div>
@@ -73,7 +83,7 @@ export default function AuthLayout({
                                 <div className="w-5 bg-white/4"></div>
                             </div>
                         </div>
-                        <div className="w-full overflow-y-auto">
+                        <div className="w-full overflow-y-auto h-full">
                             {children}
                         </div>
                     </div>
