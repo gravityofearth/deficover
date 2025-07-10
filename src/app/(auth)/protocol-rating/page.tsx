@@ -10,7 +10,10 @@ const CardItem = ({ insurance }: { insurance: InsuranceType }) => {
             <div className="w-full flex gap-[10px] items-center">
                 <svg width={64} height={64}><use href="#svg-samplelogo" /></svg>
                 <div className="flex flex-col gap-2 w-full">
-                    <div className="text-2xl font-medium leading-6">{insurance.protocol}</div>
+                    <div className="text-2xl font-medium leading-6 flex justify-between">
+                        {insurance.protocol}
+                        {insurance.verified && <span className="pr-2"><svg width={20} height={20}><use href="#svg-verified-badge" /></svg></span>}
+                    </div>
                     <div className="px-2.5 py-1 font-semibold text-[#65C565] text-xs text-center bg-[#65C565]/20 rounded-l-full rounded-r-full w-1/3">Active</div>
                 </div>
             </div>
