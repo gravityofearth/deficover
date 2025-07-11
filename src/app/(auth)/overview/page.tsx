@@ -232,7 +232,7 @@ export default function Home() {
                             >
                                 Risk Level {getSortIcon("risk_level")}
                                 <InfoTooltip
-                                    content="Risk assessment based on smart contract audits, historical incidents, and protocol maturity"
+                                    content="Determined based on TVL stability, claim payout ratios, and audit history."
                                     link={{
                                         text: "Risk assessment criteria",
                                         url: "/methodology/risk-assessment"
