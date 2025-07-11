@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from "react";
 import { formatValueInLatin, riskStyle } from "@/utils";
-import { InsuranceData, InsuranceType } from "@/utils/data";
+import { InsuranceData } from "@/utils/data";
 import { InfoTooltip } from "@/components/InfoTooltip";
 
 type SortField = "rating" | "risk_level" | "tvl" | "claims" | null;
@@ -37,8 +37,8 @@ export default function Home() {
         // Apply sorting
         if (sortField) {
             filtered.sort((a, b) => {
-                let aValue: any;
-                let bValue: any;
+                let aValue: number;
+                let bValue: number;
 
                 switch (sortField) {
                     case "rating":
@@ -157,7 +157,7 @@ export default function Home() {
                 </div>
             </div>
 
-            
+
 
             <div className="bg-white/5 border-[1px] border-white/15 rounded-[7px] p-6 w-full overflow-auto">
                 {/* Filters Section */}
@@ -166,31 +166,28 @@ export default function Home() {
                         {/* Filter Toggles */}
                         <button
                             onClick={() => setShowOnlyVerified(!showOnlyVerified)}
-                            className={`px-3 py-2 text-xs font-medium rounded-[4px] transition-all duration-200 ${
-                                showOnlyVerified 
-                                    ? "bg-[#65C565]/20 text-[#65C565] border border-[#65C565]/30" 
-                                    : "bg-white/10 text-white/60 border border-white/20 hover:bg-white/15"
-                            }`}
+                            className={`px-3 py-2 text-xs font-medium rounded-[4px] transition-all duration-200 ${showOnlyVerified
+                                ? "bg-[#65C565]/20 text-[#65C565] border border-[#65C565]/30"
+                                : "bg-white/10 text-white/60 border border-white/20 hover:bg-white/15"
+                                }`}
                         >
                             Verified
                         </button>
                         <button
                             onClick={() => setShowHighRiskOnly(!showHighRiskOnly)}
-                            className={`px-3 py-2 text-xs font-medium rounded-[4px] transition-all duration-200 ${
-                                showHighRiskOnly 
-                                    ? "bg-[#C56565]/20 text-[#C56565] border border-[#C56565]/30" 
-                                    : "bg-white/10 text-white/60 border border-white/20 hover:bg-white/15"
-                            }`}
+                            className={`px-3 py-2 text-xs font-medium rounded-[4px] transition-all duration-200 ${showHighRiskOnly
+                                ? "bg-[#C56565]/20 text-[#C56565] border border-[#C56565]/30"
+                                : "bg-white/10 text-white/60 border border-white/20 hover:bg-white/15"
+                                }`}
                         >
                             High Risk
                         </button>
                         <button
                             onClick={() => setShowInstitutionalOnly(!showInstitutionalOnly)}
-                            className={`px-3 py-2 text-xs font-medium rounded-[4px] transition-all duration-200 ${
-                                showInstitutionalOnly 
-                                    ? "bg-[#6C97DE]/20 text-[#6C97DE] border border-[#6C97DE]/30" 
-                                    : "bg-white/10 text-white/60 border border-white/20 hover:bg-white/15"
-                            }`}
+                            className={`px-3 py-2 text-xs font-medium rounded-[4px] transition-all duration-200 ${showInstitutionalOnly
+                                ? "bg-[#6C97DE]/20 text-[#6C97DE] border border-[#6C97DE]/30"
+                                : "bg-white/10 text-white/60 border border-white/20 hover:bg-white/15"
+                                }`}
                         >
                             Institutional Protocols
                         </button>
@@ -201,7 +198,7 @@ export default function Home() {
                     <thead className="border-b-[1px] border-white/15 sticky -top-[24px] bg-[#13122C]">
                         <tr className="text-[13px] text-[#A6A9AA]">
                             <th className="font-medium w-[15%] text-start pb-2 mb-2 sticky left-0 bg-[#13122C]">Protocol</th>
-                            <th 
+                            <th
                                 className="font-medium w-[10%] text-start pb-2 mb-2 cursor-pointer hover:text-white/80 transition-colors"
                                 onClick={() => handleSort("rating")}
                             >
@@ -214,7 +211,7 @@ export default function Home() {
                                     }}
                                 />
                             </th>
-                            <th 
+                            <th
                                 className="font-medium w-[15%] text-start pb-2 mb-2 cursor-pointer hover:text-white/80 transition-colors"
                                 onClick={() => handleSort("tvl")}
                             >
@@ -229,7 +226,7 @@ export default function Home() {
                                     content="Maximum insurance coverage available from all providers (OpenCover, Nexus Mutual, etc.)"
                                 />
                             </th>
-                            <th 
+                            <th
                                 className="font-medium w-[15%] text-start pb-2 mb-2 cursor-pointer hover:text-white/80 transition-colors"
                                 onClick={() => handleSort("risk_level")}
                             >
@@ -242,7 +239,7 @@ export default function Home() {
                                     }}
                                 />
                             </th>
-                            <th 
+                            <th
                                 className="font-medium w-[10%] text-start pb-2 mb-2 cursor-pointer hover:text-white/80 transition-colors"
                                 onClick={() => handleSort("claims")}
                             >
