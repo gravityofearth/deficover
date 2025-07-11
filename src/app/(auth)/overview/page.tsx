@@ -166,27 +166,27 @@ export default function Home() {
                         {/* Filter Toggles */}
                         <button
                             onClick={() => setShowOnlyVerified(!showOnlyVerified)}
-                            className={`px-3 py-2 text-xs font-medium rounded-[4px] transition-all duration-200 ${showOnlyVerified
-                                ? "bg-[#65C565]/20 text-[#65C565] border border-[#65C565]/30"
-                                : "bg-white/10 text-white/60 border border-white/20 hover:bg-white/15"
+                            className={`px-3 py-2 text-xs font-medium rounded-[4px] transition-all duration-200 shadow-sm hover:shadow-md ${showOnlyVerified
+                                ? "bg-[#65C565]/20 text-[#65C565] border border-[#65C565]/30 shadow-[#65C565]/20"
+                                : "bg-white/10 text-white/60 border border-white/20 hover:bg-white/15 shadow-black/20"
                                 }`}
                         >
                             Verified
                         </button>
                         <button
                             onClick={() => setShowHighRiskOnly(!showHighRiskOnly)}
-                            className={`px-3 py-2 text-xs font-medium rounded-[4px] transition-all duration-200 ${showHighRiskOnly
-                                ? "bg-[#C56565]/20 text-[#C56565] border border-[#C56565]/30"
-                                : "bg-white/10 text-white/60 border border-white/20 hover:bg-white/15"
+                            className={`px-3 py-2 text-xs font-medium rounded-[4px] transition-all duration-200 shadow-sm hover:shadow-md ${showHighRiskOnly
+                                ? "bg-[#C56565]/20 text-[#C56565] border border-[#C56565]/30 shadow-[#C56565]/20"
+                                : "bg-white/10 text-white/60 border border-white/20 hover:bg-white/15 shadow-black/20"
                                 }`}
                         >
                             High Risk
                         </button>
                         <button
                             onClick={() => setShowInstitutionalOnly(!showInstitutionalOnly)}
-                            className={`px-3 py-2 text-xs font-medium rounded-[4px] transition-all duration-200 ${showInstitutionalOnly
-                                ? "bg-[#6C97DE]/20 text-[#6C97DE] border border-[#6C97DE]/30"
-                                : "bg-white/10 text-white/60 border border-white/20 hover:bg-white/15"
+                            className={`px-3 py-2 text-xs font-medium rounded-[4px] transition-all duration-200 shadow-sm hover:shadow-md ${showInstitutionalOnly
+                                ? "bg-[#6C97DE]/20 text-[#6C97DE] border border-[#6C97DE]/30 shadow-[#6C97DE]/20"
+                                : "bg-white/10 text-white/60 border border-white/20 hover:bg-white/15 shadow-black/20"
                                 }`}
                         >
                             Institutional Protocols

@@ -31,11 +31,11 @@ export const showToast = (msg: ToastContent<unknown>, type: "info" | "error" | "
 }
 export const formatValueInLatin = (value: number) => {
   if (value >= 1000000000) {
-    return (value / 1000000000).toFixed(1) + "B";
+    return ((value / 1000000000).toFixed(1) + "B").replace(".0B", "B");
   } else if (value >= 1000000) {
-    return (value / 1000000).toFixed(1) + "M";
+    return ((value / 1000000).toFixed(1) + "M").replace(".0M", "M");
   } else if (value >= 1000) {
-    return (value / 1000).toFixed(1) + "K";
+    return ((value / 1000).toFixed(1) + "K").replace(".0K", "K");
   } else {
     return value.toString();
   }
