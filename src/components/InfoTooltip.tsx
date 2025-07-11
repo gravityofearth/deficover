@@ -26,7 +26,7 @@ export const InfoTooltip: React.FC<InfoTooltipProps> = ({ content, link, classNa
             </button>
 
             {isVisible && (
-                <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 text-xs text-white bg-black/90 rounded-md opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-50 max-w-fit">
+                <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 text-xs text-white bg-black/90 rounded-md opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-200 max-w-fit">
                     <div className="text-center">
                         {content}
                         {link && (
