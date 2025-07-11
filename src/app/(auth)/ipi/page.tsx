@@ -66,7 +66,7 @@ export default function Home() {
                                         )}
                                     </div>
                                 </td>
-                                <td className="py-[11px]"><div className="font-medium text-xs text-white/80 text-center w-[230px] rounded-[6px] py-1 border-[1px] border-black/50">{insurance.product_type}</div></td>
+                                <td className="py-[11px]"><div className="font-medium text-xs text-white/80 text-center w-[230px] rounded-[6px] py-1 border-[1px] border-white/50 bg-white/5">{insurance.product_type}</div></td>
                                 <td className="font-medium text-sm py-[11px] text-white/80">{insurance.ipi}%</td>
                                 <td className="font-medium text-sm py-[11px] text-[#6FB75D]">+0.2</td>
                                 <td className="py-[11px]"><div className={`font-medium text-[13px] text-[#6FB75D] text-center w-[88px] bg-[#6FB75D]/20 rounded-[3px] py-2 ${riskStyle[insurance.risk_level]}`}>{insurance.risk_level}</div></td>

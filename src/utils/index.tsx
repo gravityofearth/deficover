@@ -42,7 +42,7 @@ export const formatValueInLatin = (value: number) => {
 }
 
 export const riskStyle: { [key in RiskLevelType]: string } = {
-  "Low": "bg-[#6FB75D]/20 text-[#6FB75D]",
-  "Medium": "bg-[#D1A941]/20 text-[#D1A941]",
-  "High": "bg-[#C56565]/20 text-[#C56565]"
+  "Low": "bg-green-500/20 text-green-500",
+  "Medium": "bg-yellow-500/20 text-yellow-500",
+  "High": "bg-red-500/20 text-red-500"
 }

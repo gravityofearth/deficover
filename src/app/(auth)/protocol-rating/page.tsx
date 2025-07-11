@@ -45,16 +45,16 @@ const CardItem = ({ insurance }: { insurance: InsuranceType }) => {
                     <div className="text-sm leading-5">${formatValueInLatin(insurance.tvl)}</div>
                 </div>
                 <div className="flex justify-between">
-                    <div className="text-sm leading-5">Coverage</div>
-                    <div className="text-sm leading-5">${formatValueInLatin(insurance.coverage)}</div>
+                    <div className="text-sm leading-5">Coverage Ratio</div>
+                    <div className="text-sm leading-5">{(insurance.tvl / insurance.coverage * 100).toFixed(2)}%</div>
                 </div>
                 <div className="flex justify-between">
-                    <div className="text-sm leading-5">Premium</div>
-                    <div className="text-sm leading-5">${formatValueInLatin(insurance.premiums)}</div>
+                    <div className="text-sm leading-5">Premium Rate</div>
+                    <div className="text-sm leading-5">{(insurance.premiums / insurance.tvl * 100).toFixed(2)}%</div>
                 </div>
                 <div className="flex justify-between">
-                    <div className="text-sm leading-5">Claims</div>
-                    <div className="text-sm leading-5">${formatValueInLatin(insurance.claims)}</div>
+                    <div className="text-sm leading-5">Claims Ratio</div>
+                    <div className="text-sm leading-5">{(insurance.claims / insurance.tvl * 100).toFixed(2)}%</div>
                 </div>
             </div>
             <div className="w-full h-[1px] bg-[#CACACA]"></div>

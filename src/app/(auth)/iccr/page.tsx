@@ -40,7 +40,7 @@ export default function Home() {
                             <th className="font-medium w-[15%] text-start pb-2 mb-2 sticky left-0 bg-[#13122C]">Protocol</th>
                             <th className="font-medium w-[10%] text-start pb-2 mb-2">Overall</th>
                             <th className="font-medium w-[10%] text-start pb-2 mb-2">Claims</th>
-                            <th className="font-medium w-[10%] text-start pb-2 mb-2">Coverage</th>
+                            <th className="font-medium w-[10%] text-start pb-2 mb-2">Coverage Ratio</th>
                             <th className="font-medium w-[10%] text-start pb-2 mb-2">Liquidity</th>
                             <th className="font-medium w-[15%] text-start pb-2 mb-2">Payout Ratio</th>
                             <th className="font-medium w-[15%] text-start pb-2 mb-2">Avg Settlement</th>
@@ -67,7 +67,7 @@ export default function Home() {
                                 </td>
                                 <td className="py-[11px]"><div className="font-medium text-sm py-[11px] text-white">{insurance.iccr}%</div></td>
                                 <td className="py-[11px]"><div className="font-medium text-sm py-[11px] text-white">${formatValueInLatin(insurance.claims)}</div></td>
-                                <td className="py-[11px]"><div className="font-medium text-sm py-[11px] text-white">${formatValueInLatin(insurance.coverage)}</div></td>
+                                <td className="py-[11px]"><div className="font-medium text-sm py-[11px] text-white">{(insurance.tvl / insurance.coverage * 100).toFixed(2)}%</div></td>
                                 <td className="py-[11px]"><div className="font-medium text-sm py-[11px] text-white">${formatValueInLatin(insurance.tvl)}</div></td>
                                 <td className="font-medium text-sm py-[11px] text-white">{insurance.payout_ratio}%</td>
                                 <td className="font-medium text-sm py-[11px] text-white">{insurance.settlement_time}</td>
