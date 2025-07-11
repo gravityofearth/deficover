@@ -51,13 +51,22 @@ export default function Home() {
                     <tbody>
                         {InsuranceData.map((insurance, i) =>
                             <tr key={i}>
-                                <td className="font-medium text-sm pt-[22px] bg-[#13122C] sticky left-0">
+                                <td className="font-medium text-sm py-[11px] bg-[#13122C] sticky left-0">
                                     <div className="flex gap-3 justify-between">
                                         {insurance.protocol}
-                                        {insurance.verified && <span className="pr-2"><svg width={20} height={20}><use href="#svg-verified-badge" /></svg></span>}
+                                        {insurance.verified && (
+                                            <span className="pr-2 relative group">
+                                                <svg width={20} height={20}>
+                                                    <use href="#svg-verified-badge" />
+                                                </svg>
+                                                <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 text-xs text-white bg-black/80 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-10">
+                                                    Verified by DeFiCover: Meets ICCR transparency and audit standards.
+                                                </div>
+                                            </span>
+                                        )}
                                     </div>
                                 </td>
-                                <td className="py-[11px]"><div className="font-medium text-xs text-white/80 text-center w-[120px] rounded-[6px] py-1 border-[1px] border-black/50">{insurance.product_type}</div></td>
+                                <td className="py-[11px]"><div className="font-medium text-xs text-white/80 text-center w-[230px] rounded-[6px] py-1 border-[1px] border-black/50">{insurance.product_type}</div></td>
                                 <td className="font-medium text-sm py-[11px] text-white/80">{insurance.ipi}%</td>
                                 <td className="font-medium text-sm py-[11px] text-[#6FB75D]">+0.2</td>
                                 <td className="py-[11px]"><div className={`font-medium text-[13px] text-[#6FB75D] text-center w-[88px] bg-[#6FB75D]/20 rounded-[3px] py-2 ${riskStyle[insurance.risk_level]}`}>{insurance.risk_level}</div></td>

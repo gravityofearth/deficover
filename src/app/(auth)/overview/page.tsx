@@ -52,7 +52,16 @@ export default function Home() {
                                 <td className="font-medium text-sm pt-[22px] bg-[#13122C] sticky left-0">
                                     <div className="flex gap-3 justify-between">
                                         {insurance.protocol}
-                                        {insurance.verified && <span className="pr-2"><svg width={20} height={20}><use href="#svg-verified-badge" /></svg></span>}
+                                        {insurance.verified && (
+                                            <span className="pr-2 relative group">
+                                                <svg width={20} height={20}>
+                                                    <use href="#svg-verified-badge" />
+                                                </svg>
+                                                <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 text-xs text-white bg-black/80 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-10">
+                                                    Verified by DeFiCover: Meets ICCR transparency and audit standards.
+                                                </div>
+                                            </span>
+                                        )}
                                     </div>
                                 </td>
                                 <td className="pt-[22px]"><div className="font-medium text-[13px] text-[#6C97DE] text-center w-[52px] bg-[#6C97DE]/20 rounded-[3px] py-2">{insurance.rating}</div></td>

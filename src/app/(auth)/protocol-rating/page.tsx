@@ -10,9 +10,18 @@ const CardItem = ({ insurance }: { insurance: InsuranceType }) => {
             <div className="w-full flex gap-[10px] items-center">
                 <svg width={64} height={64}><use href="#svg-samplelogo" /></svg>
                 <div className="flex flex-col gap-2 w-full">
-                    <div className="text-2xl font-medium leading-6 flex justify-between">
+                    <div className="text-2xl font-medium leading-6 flex gap-2">
                         {insurance.protocol}
-                        {insurance.verified && <span className="pr-2"><svg width={20} height={20}><use href="#svg-verified-badge" /></svg></span>}
+                        {insurance.verified && (
+                            <span className="pr-2 relative group">
+                                <svg width={20} height={20}>
+                                    <use href="#svg-verified-badge" />
+                                </svg>
+                                <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 text-xs text-white bg-black/80 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-10">
+                                    Verified by DeFiCover: Meets ICCR transparency and audit standards.
+                                </div>
+                            </span>
+                        )}
                     </div>
                     <div className="px-2.5 py-1 font-semibold text-[#65C565] text-xs text-center bg-[#65C565]/20 rounded-l-full rounded-r-full w-1/3">Active</div>
                 </div>

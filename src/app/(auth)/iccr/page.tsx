@@ -50,10 +50,19 @@ export default function Home() {
                     <tbody>
                         {InsuranceData.map((insurance, i) =>
                             <tr key={i}>
-                                <td className="font-medium text-sm pt-[22px] bg-[#13122C] sticky left-0">
+                                <td className="font-medium text-sm py-[11px] bg-[#13122C] sticky left-0">
                                     <div className="flex gap-3 justify-between">
                                         {insurance.protocol}
-                                        {insurance.verified && <span className="pr-2"><svg width={20} height={20}><use href="#svg-verified-badge" /></svg></span>}
+                                        {insurance.verified && (
+                                            <span className="pr-2 relative group">
+                                                <svg width={20} height={20}>
+                                                    <use href="#svg-verified-badge" />
+                                                </svg>
+                                                <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 text-xs text-white bg-black/80 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-10">
+                                                    Verified by DeFiCover: Meets ICCR transparency and audit standards.
+                                                </div>
+                                            </span>
+                                        )}
                                     </div>
                                 </td>
                                 <td className="py-[11px]"><div className="font-medium text-sm py-[11px] text-white">{insurance.iccr}%</div></td>
