@@ -2,10 +2,22 @@
 
 import { useState } from 'react';
 import { useStripe } from '@/hooks/useStripe';
+import type { SubscriptionData } from '@/services/stripe';
+
+// Temporary subscription hook (until we fix the import issue)
+const useSubscription = () => {
+  return {
+    subscription: null as SubscriptionData | null, // For now, return null to show Free plan
+    loading: false,
+    error: null,
+    refreshSubscription: async () => {},
+  };
+};
 
 export default function Home() {
     const [isYearly, setIsYearly] = useState(false);
     const { loading, error, createCheckoutSession } = useStripe();
+    const { subscription, loading: subscriptionLoading } = useSubscription();
 
     // Plan pricing
     const plans = [
@@ -54,26 +66,81 @@ export default function Home() {
         },
     ];
 
-    // For Current Subscription section (example: Pro plan)
-    const currentPlan = isYearly ? {
-        name: 'Pro Plan',
-        planKey: 'PRO',
-        nextBilling: 'June 15, 2025',
-        price: plans[1].priceYearly,
-        period: '/YEAR',
-    } : {
-        name: 'Pro Plan',
-        planKey: 'PRO',
-        nextBilling: 'June 15, 2025',
-        price: plans[1].price,
-        period: '/MONTH',
+    // Get current plan based on real subscription data
+    const getCurrentPlan = () => {
+        if (!subscription) {
+            return {
+                name: 'Free Plan',
+                planKey: 'FREE',
+                nextBilling: 'N/A',
+                price: 0,
+                period: '',
+            };
+        }
+
+        const planName = subscription.planName;
+        const isYearly = subscription.isYearly;
+        
+        if (planName.includes('Pro')) {
+            return {
+                name: 'Pro Plan',
+                planKey: 'PRO',
+                nextBilling: new Date(subscription.currentPeriodEnd * 1000).toLocaleDateString(),
+                price: isYearly ? plans[1].priceYearly : plans[1].price,
+                period: isYearly ? '/YEAR' : '/MONTH',
+            };
+        } else if (planName.includes('Business')) {
+            return {
+                name: 'Business Plan',
+                planKey: 'BUSINESS',
+                nextBilling: new Date(subscription.currentPeriodEnd * 1000).toLocaleDateString(),
+                price: isYearly ? plans[2].priceYearly : plans[2].price,
+                period: isYearly ? '/YEAR' : '/MONTH',
+            };
+        }
+
+        return {
+            name: 'Free Plan',
+            planKey: 'FREE',
+            nextBilling: 'N/A',
+            price: 0,
+            period: '',
+        };
+    };
+
+    const currentPlan = getCurrentPlan();
+
+    // Check if a plan is the current plan
+    const isCurrentPlan = (planName: string) => {
+        if (!subscription) return planName === 'FREE';
+        
+        const planKey = planName.toUpperCase();
+        const subscriptionPlan = subscription.planName;
+        
+        if (planKey === 'PRO') return subscriptionPlan.includes('Pro');
+        if (planKey === 'BUSINESS') return subscriptionPlan.includes('Business');
+        return false;
+    };
+
+    // Get button text for a plan
+    const getButtonText = (planName: string) => {
+        if (isCurrentPlan(planName)) return 'Current Plan';
+        if (planName === 'FREE') return 'Current Plan';
+        return 'Upgrade Plan';
+    };
+
+    // Check if button should be disabled
+    const isButtonDisabled = (planName: string) => {
+        return isCurrentPlan(planName) || loading;
     };
 
     return (
-        <div className="p-8 w-full"> {/* main contents */}
+        <div className="p-8 w-full">
             <div className="flex flex-col items-center">
                 <div className="mt-10 text-4xl font-bold leading-[42px]">Choose Your Plan</div>
                 <div className="mt-3 mb-10 text-sm text-white/80 leading-[18px]">Secure your savings with the right plan for your needs</div>
+                
+                {/* Billing Toggle */}
                 <div className="flex items-center justify-between gap-4 mb-8">
                     <div className={`font-medium leading-[22px] ${!isYearly ? 'text-[#7D00FE]' : ''}`}>Monthly</div>
                     <div className="">
@@ -91,11 +158,17 @@ export default function Home() {
                     <div className={`font-medium leading-[22px] ${isYearly ? 'text-[#7D00FE]' : ''}`}>Yearly</div>
                     <div className="text-[#E8F2FF] text-[11px] leading-4 px-2.5 py-2 bg-[#0F0F0F] border-[#1F1F1F] border-[1px] rounded-full">Discount 10%</div>
                 </div>
+
                 {error && <div className="text-red-500 mb-4">{error}</div>}
+
+                {/* Plans Grid */}
                 <div className="w-full grid grid-cols-3 max-xl:grid-cols-1 max-xl:max-w-[420px] gap-4">
                     {plans.map((plan, idx) => {
-                        const isCurrent = plan.name.toUpperCase() === currentPlan.planKey;
+                        const isCurrent = isCurrentPlan(plan.name);
                         const isPaidPlan = plan.name === 'PRO' || plan.name === 'BUSINESS';
+                        const buttonText = getButtonText(plan.name);
+                        const isDisabled = isButtonDisabled(plan.name);
+
                         return (
                             <div
                                 key={plan.name}
@@ -118,7 +191,7 @@ export default function Home() {
                                     <div className="text-[54px] font-medium">
                                         ${isYearly ? plan.priceYearly : plan.price}
                                     </div>
-                                    <div className="text-xl font-medium text-[#808080] ">{isYearly ? '/YEAR' : '/MONTH'}</div>
+                                    <div className="text-xl font-medium text-[#808080]">{isYearly ? '/YEAR' : '/MONTH'}</div>
                                 </div>
                                 <div className="my-6 w-full border-[#2B2B2B] border-[0.5px]"></div>
                                 <div className="h-[192px] mb-6">
@@ -128,42 +201,45 @@ export default function Home() {
                                 </div>
                                 <button
                                     className={
-                                        isCurrent
+                                        isDisabled
                                             ? "bg-linear-to-b from-transparent to-white/8 text-sm leading-[26px] w-full h-10 border-white/10 rounded-[6px] border-[1px] opacity-60 cursor-not-allowed"
                                             : plan.highlight
                                                 ? "bg-[#7D00FE] text-sm leading-[26px] w-full h-10 border-white/10 rounded-[6px] border-[1px]"
                                                 : "bg-linear-to-b from-transparent to-white/8 text-sm leading-[26px] w-full h-10 border-white/10 rounded-[6px] border-[1px]"
                                     }
-                                    disabled={isCurrent || loading}
+                                    disabled={isDisabled}
                                     onClick={
                                         isPaidPlan && !isCurrent
                                             ? () => createCheckoutSession(plan.name, isYearly)
                                             : undefined
                                     }
                                 >
-                                    {loading && isPaidPlan && !isCurrent ? 'Processing...' : isCurrent ? 'Current Plan' : 'Upgrade Plan'}
+                                    {loading && isPaidPlan && !isCurrent ? 'Processing...' : buttonText}
                                 </button>
                             </div>
                         );
                     })}
                 </div>
+
+                {/* Current Subscription Section */}
                 <div className="w-full border-white/15 border-[1px] rounded-[20px] mt-[30px] p-4 bg-white/3 ">
                     <div className="leading-5 mb-[27px]">Current Subscription</div>
-                    <div className="flex justify-between items-center">
-                        <div>
-                            <div className="text-xs">{currentPlan.name}</div>
-                            <div className="text-xs text-white/60">Next billing: {currentPlan.nextBilling}</div>
-                        </div>
-                        <div className="flex items-baseline">
-                            <div className="text-xl leading-4">${currentPlan.price}</div>
-                            <div className="text-xs ml-1 text-white/60">{currentPlan.period}</div>
-                        </div>
-                    </div>
-                    <div className="w-full h-[1px] bg-white/15 my-2.5"></div>
-                    <div className="flex justify-end gap-[13px]">
-                        <button className="w-[120px] h-10 bg-linear-to-b from-transparent to-white/8 border-[1px] border-white/10 text-sm rounded-[6px]">Cancel</button>
-                        <button className="w-[136px] h-10 bg-[#7D00FE] border-[1px] border-white/20 text-sm rounded-[6px]">Upgrade Plan</button>
-                    </div>
+                    {subscriptionLoading ? (
+                        <div className="text-sm text-white/60">Loading subscription...</div>
+                    ) : (
+                        <>
+                            <div className="flex justify-between items-center">
+                                <div>
+                                    <div className="text-xs">{currentPlan.name}</div>
+                                    <div className="text-xs text-white/60">Next billing: {currentPlan.nextBilling}</div>
+                                </div>
+                                <div className="flex items-baseline">
+                                    <div className="text-xl leading-4">${currentPlan.price}</div>
+                                    <div className="text-xs ml-1 text-white/60">{currentPlan.period}</div>
+                                </div>
+                            </div>
+                        </>
+                    )}
                 </div>
             </div>
         </div>
