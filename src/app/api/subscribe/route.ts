@@ -21,7 +21,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 
 export async function POST(request: NextRequest) {
   try {
-    const { priceId, planName, isYearly } = await request.json();
+    const { priceId, planName, isYearly, referralCode } = await request.json();
 
     // Get the authorization header
     const authHeader = request.headers.get('authorization');
@@ -59,12 +59,14 @@ export async function POST(request: NextRequest) {
         userId: userId,
         planName: planName,
         isYearly: isYearly.toString(),
+        ...(referralCode && { referralCode }),
       },
       subscription_data: {
         metadata: {
           userId: userId,
           planName: planName,
           isYearly: isYearly.toString(),
+          ...(referralCode && { referralCode }),
         },
       },
     });

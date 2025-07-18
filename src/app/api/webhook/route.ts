@@ -39,6 +39,53 @@ export async function POST(request: NextRequest) {
       case 'checkout.session.completed':
         const session = event.data.object as Stripe.Checkout.Session;
         console.log('Checkout session completed:', session.id);
+        
+        // Handle affiliate referral if present
+        if (session.metadata?.referralCode) {
+          try {
+            const { AffiliateService } = await import('@/services/affiliate');
+            const { getAuth } = await import('firebase-admin/auth');
+            
+            // Get user info from session metadata
+            const userId = session.metadata.userId;
+            const planName = session.metadata.planName;
+            const referralCode = session.metadata.referralCode;
+            
+            // Get referrer ID from referral code
+            const { collection, query, where, getDocs } = await import('firebase/firestore');
+            const { db } = await import('@/services/firebase');
+            
+            const affiliatesRef = collection(db, 'affiliates');
+            const q = query(affiliatesRef, where('referralCode', '==', referralCode));
+            const querySnapshot = await getDocs(q);
+            
+            if (!querySnapshot.empty) {
+              const referrerId = querySnapshot.docs[0].data().userId;
+              const userEmail = session.customer_email || '';
+              
+              // Calculate subscription amount
+              let subscriptionAmount = 0;
+              if (planName.includes('PRO_MONTHLY')) subscriptionAmount = 29.99;
+              else if (planName.includes('PRO_YEARLY')) subscriptionAmount = 323.89;
+              else if (planName.includes('BUSINESS_MONTHLY')) subscriptionAmount = 89;
+              else if (planName.includes('BUSINESS_YEARLY')) subscriptionAmount = 961.20;
+              
+              // Create referral record
+              await AffiliateService.createReferral(
+                referrerId,
+                userId,
+                userEmail,
+                planName,
+                subscriptionAmount
+              );
+              
+              console.log(`Affiliate referral created: ${referrerId} -> ${userId}`);
+            }
+          } catch (error) {
+            console.error('Error processing affiliate referral:', error);
+          }
+        }
+        
         // Here you can update user subscription status in your database
         break;
 

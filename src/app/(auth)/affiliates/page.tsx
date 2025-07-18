@@ -2,13 +2,13 @@
 
 import Pagination from "@/components/Pagination";
 import { useState } from "react";
-export default function Home() {
-    const [currentPage, setCurrentPage] = useState(1);
-    // const itemsPerPage = 7;
+import { useAffiliate } from "@/hooks/useAffiliate";
+import { formatCurrency } from "@/utils/affiliate";
 
-    // const totalPages = Math.ceil(mockProtocolData.length / itemsPerPage);
-    const totalPages = 40;
-    // const currentData = mockProtocolData.slice(startIndex, endIndex);
+export default function Home() {
+    const { affiliate, loading, error, copyReferralLink } = useAffiliate();
+    const [currentPage, setCurrentPage] = useState(1);
+    const totalPages = 40; // We'll update this later
 
     const handlePageChange = (page: number) => {
         setCurrentPage(page);
@@ -29,8 +29,8 @@ export default function Home() {
                         <div className="flex flex-col gap-2 w-full border-[1px] border-white/15 bg-white/3 rounded-xl p-6">
                             <div className="text-[13px] text-white/80 font-medium leading-4">Clicks</div>
                             <div className="flex justify-between">
-                                <div className="text-[21px] font-medium leading-6">41</div>
-                                <div className="px-4 py-1 font-semibold text-[#65C565] text-xs text-center bg-[#65C565]/20 rounded-l-full rounded-r-full">+3</div>
+                                <div className="text-[21px] font-medium leading-6">{loading ? '...' : (affiliate?.totalClicks || 0)}</div>
+                                <div className="px-4 py-1 font-semibold text-[#65C565] text-xs text-center bg-[#65C565]/20 rounded-l-full rounded-r-full">+{Math.floor((affiliate?.totalClicks || 0) * 0.1)}</div>
                             </div>
                         </div>
                         <div className="flex flex-col gap-2 w-full border-[1px] border-white/15 bg-white/3 rounded-xl p-6">
@@ -57,8 +57,18 @@ export default function Home() {
                         <div className="flex flex-col gap-6 w-full border-[1px] border-white/15 bg-white/3 rounded-xl p-6">
                             <div className="text-[21px] font-medium leading-6">Your unique referral link</div>
                             <div className="flex justify-between gap-2">
-                                <input type="link" className="w-full bg-white/3 outline-none text-white/80 border-[1px] border-white/15 rounded-lg px-3 py-2" placeholder="https://deficover.com/aff-abcdeflink" />
-                                <button className="text-[13px] leading-5 border-[1px] border-white/25 rounded-lg px-6 py-2 bg-[#7D00FE]">Copy</button>
+                                <input 
+                                    type="text" 
+                                    className="w-full bg-white/3 outline-none text-white/80 border-[1px] border-white/15 rounded-lg px-3 py-2" 
+                                    value={affiliate?.referralLink || ''} 
+                                    readOnly 
+                                />
+                                <button 
+                                    onClick={copyReferralLink}
+                                    className="text-[13px] leading-5 border-[1px] border-white/25 rounded-lg px-6 py-2 bg-[#7D00FE]"
+                                >
+                                    Copy
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -67,7 +77,7 @@ export default function Home() {
                     <div className="flex flex-col gap-3 p-6 border-[1px] border-white/15 rounded-xl bg-white/3">
                         <div>
                             <div className="text-xs font-medium leading-5 text-white/80">Available Commissions Balance</div>
-                            <div className="text-xl font-semibold">$0.00 USD</div>
+                            <div className="text-xl font-semibold">{formatCurrency(affiliate?.totalEarnings || 0)}</div>
                         </div>
                         <div className="w-full h-[1px] bg-white/20"></div>
                         <div className="flex flex-col gap-2">

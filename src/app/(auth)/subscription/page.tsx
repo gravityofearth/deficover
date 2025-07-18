@@ -6,6 +6,17 @@ import { useStripe } from '@/hooks/useStripe';
 export default function Home() {
     const [isYearly, setIsYearly] = useState(false);
     const { loading, error, createCheckoutSession } = useStripe();
+    
+    // Get referral code from URL if present
+    const [referralCode, setReferralCode] = useState<string>('');
+    
+    useEffect(() => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const ref = urlParams.get('ref');
+        if (ref) {
+            setReferralCode(ref);
+        }
+    }, []);
 
     // Plan pricing
     const plans = [
@@ -137,7 +148,7 @@ export default function Home() {
                                     disabled={isCurrent || loading}
                                     onClick={
                                         isPaidPlan && !isCurrent
-                                            ? () => createCheckoutSession(plan.name, isYearly)
+                                            ? () => createCheckoutSession(plan.name, isYearly, referralCode)
                                             : undefined
                                     }
                                 >

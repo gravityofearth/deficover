@@ -6,7 +6,7 @@ import { STRIPE_PLANS } from '@/services/stripe';
 interface UseStripeReturn {
   loading: boolean;
   error: string | null;
-  createCheckoutSession: (planKey: string, isYearly: boolean) => Promise<void>;
+  createCheckoutSession: (planKey: string, isYearly: boolean, referralCode?: string) => Promise<void>;
 }
 
 export const useStripe = (): UseStripeReturn => {
@@ -14,7 +14,7 @@ export const useStripe = (): UseStripeReturn => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const createCheckoutSession = async (planKey: string, isYearly: boolean) => {
+  const createCheckoutSession = async (planKey: string, isYearly: boolean, referralCode?: string) => {
     if (!user) {
       setError('User not authenticated');
       return;
@@ -52,6 +52,7 @@ export const useStripe = (): UseStripeReturn => {
           priceId,
           planName,
           isYearly,
+          referralCode,
         }),
       });
 
