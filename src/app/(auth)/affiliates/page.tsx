@@ -9,9 +9,18 @@ export default function Home() {
     const { affiliate, loading, error, copyReferralLink } = useAffiliate();
     const [currentPage, setCurrentPage] = useState(1);
     const totalPages = 40; // We'll update this later
+    const [copied, setCopied] = useState(false);
 
     const handlePageChange = (page: number) => {
         setCurrentPage(page);
+    };
+
+    const handleCopy = () => {
+        if (affiliate?.referralLink) {
+            navigator.clipboard.writeText(affiliate.referralLink);
+            setCopied(true);
+            setTimeout(() => setCopied(false), 1500); // Reset after 1.5s
+        }
     };
     return (
         <div className="p-8 w-full">
@@ -64,10 +73,10 @@ export default function Home() {
                                     readOnly 
                                 />
                                 <button 
-                                    onClick={copyReferralLink}
+                                    onClick={handleCopy}
                                     className="text-[13px] leading-5 border-[1px] border-white/25 rounded-lg px-6 py-2 bg-[#7D00FE]"
                                 >
-                                    Copy
+                                    {copied ? "Copied!" : "Copy"}
                                 </button>
                             </div>
                         </div>
