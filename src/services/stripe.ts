@@ -32,3 +32,14 @@ export const STRIPE_PLANS = {
     price: 961.20, // 89 * 12 * 0.9
   },
 }; 
+
+// Subscription data interface
+export interface SubscriptionData {
+  id: string;
+  status: string;
+  currentPeriodEnd: number;
+  cancelAtPeriodEnd: boolean;
+  planName: string;
+  priceId: string;
+  isYearly: boolean;
+}
