@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useStripe } from '@/hooks/useStripe';
 import type { SubscriptionData } from '@/services/stripe';
 
@@ -18,6 +18,13 @@ export default function Home() {
     const [isYearly, setIsYearly] = useState(false);
     const { loading, error, createCheckoutSession } = useStripe();
     const { subscription, loading: subscriptionLoading } = useSubscription();
+    const [referralCode, setReferralCode] = useState<string>('');
+
+    useEffect(() => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const ref = urlParams.get('ref');
+      if (ref) setReferralCode(ref);
+    }, []);
 
     // Plan pricing
     const plans = [
