@@ -5,7 +5,7 @@ import { useUser } from "@/store";
 import { signOut } from "firebase/auth";
 import Image from "next/image";
 import Link from "next/link";
-import { redirect } from 'next/navigation'
+import { redirect, usePathname } from 'next/navigation'
 import { useEffect, useState } from "react";
 
 
@@ -16,12 +16,13 @@ export default function AuthLayout({
 }>) {
     const { user } = useUser()
     const [showSidebar, setShowSidebar] = useState(false)
+    const pathname = usePathname()
     const exit = () => {
         signOut(auth)
     }
     useEffect(() => {
         if (!user) return
-        if (user === "None") redirect("/login")
+        if (user === "None") redirect(`/login?redirect=${pathname}`)
         console.log(user)
         if (!user.emailVerified) redirect("/verify-email")
     }, [user])
@@ -40,8 +41,8 @@ export default function AuthLayout({
                                 <Image alt="user" src={user ? user.photoURL ?? "/user.png" : "/user.png"} height={40} width={40} className="rounded-full" />
                                 <div>
                                     <div className="w-full flex flex-col">
-                                        <div className="font-medium text-sm">Josh Anderson</div>
-                                        <div className="font-medium text-xs text-[#525866]">josh@gmail.com</div>
+                                        <div className="font-medium text-sm">{user?.displayName}</div>
+                                        <div className="font-medium text-xs text-[#525866]">{user?.email}</div>
                                     </div>
                                 </div>
                                 <Link href="/profile" className="hover:bg-white/10 p-2 rounded-full">
@@ -72,8 +73,8 @@ export default function AuthLayout({
                                     <Image alt="user" src={user ? user.photoURL ?? "/user.png" : "/user.png"} height={40} width={40} className="rounded-full" />
                                     <div>
                                         <div className="w-full flex flex-col">
-                                            <div className="font-medium text-sm">Josh Anderson</div>
-                                            <div className="font-medium text-xs text-[#525866]">josh@gmail.com</div>
+                                            <div className="font-medium text-sm">{user?.displayName}</div>
+                                            <div className="font-medium text-xs text-[#525866]">{user?.email}</div>
                                         </div>
                                     </div>
                                     <Link href="/profile" className="hover:bg-white/10 p-2 rounded-full">

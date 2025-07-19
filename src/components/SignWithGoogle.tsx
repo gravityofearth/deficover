@@ -1,8 +1,10 @@
 import { auth, provider } from "@/services/firebase";
 import { signInWithPopup } from "firebase/auth";
-import { redirect } from "next/navigation";
+import { redirect, useSearchParams } from "next/navigation";
 
 const SignWithGoogle = () => {
+    const searchParams = useSearchParams()
+    const redirectUrl = searchParams.get('redirect')
     const signWithGoogle = () => {
         signInWithPopup(auth, provider)
             .then((/**result */) => {
@@ -11,7 +13,7 @@ const SignWithGoogle = () => {
                 // const token = credential?.accessToken;
                 
                 // const user = result.user;
-                redirect("/overview")
+                redirect(redirectUrl ?? "/overview")
                 // IdP data available using getAdditionalUserInfo(result)
                 // ...
             })

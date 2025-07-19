@@ -5,13 +5,15 @@ import SignWithGoogle from "@/components/SignWithGoogle";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "@/services/firebase";
 import { useState } from "react";
-import { redirect } from "next/navigation";
+import { redirect, useSearchParams } from "next/navigation";
 import { isValidEmail, showToast } from "@/utils";
 
 
 export default function Home() {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
+    const searchParams = useSearchParams()
+    const redirectUrl = searchParams.get('redirect')
     const logIn = () => {
         if (!isValidEmail) {
             showToast("Invalid email address", "error")
@@ -29,7 +31,7 @@ export default function Home() {
             .then((/* userCredential */) => {
                 // Signed in 
                 // const user = userCredential.user;
-                redirect("/overview")
+                redirect(redirectUrl ?? "/overview")
             })
             .catch((error) => {
                 // const errorCode = error.code;

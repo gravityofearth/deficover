@@ -4,12 +4,24 @@ import Pagination from "@/components/Pagination";
 import { useState } from "react";
 import { useAffiliate } from "@/hooks/useAffiliate";
 import { formatCurrency } from "@/utils/affiliate";
+import { useEffect } from "react";
+import { auth } from "@/services/firebase";
+
+type Referral = {
+  name: string;
+  plan: string;
+  payAmount: string;
+  incentive: string;
+};
 
 export default function Home() {
     const { affiliate, loading, error, copyReferralLink } = useAffiliate();
     const [currentPage, setCurrentPage] = useState(1);
     const totalPages = 40; // We'll update this later
     const [copied, setCopied] = useState(false);
+    const [referrals, setReferrals] = useState<Referral[]>([]);
+    const [referralsLoading, setReferralsLoading] = useState(false);
+    const [referralsError, setReferralsError] = useState<string | null>(null);
 
     const handlePageChange = (page: number) => {
         setCurrentPage(page);
@@ -22,6 +34,32 @@ export default function Home() {
             setTimeout(() => setCopied(false), 1500); // Reset after 1.5s
         }
     };
+
+    const fetchReferrals = async (page = 1, limit = 10) => {
+        if (!affiliate) return;
+        setReferralsLoading(true);
+        setReferralsError(null);
+        try {
+            const token = await auth.currentUser?.getIdToken();
+            const res = await fetch(`/api/affiliate/referrals?page=${page}&limit=${limit}`, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            if (!res.ok) throw new Error("Failed to fetch referrals");
+            const data = await res.json();
+            setReferrals(data.referrals); // or setReferrals(data.referrals) if the API returns {referrals: [...]}
+        } catch (err) {
+            setReferralsError(err instanceof Error ? err.message : String(err));
+        } finally {
+            setReferralsLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        if (affiliate) {
+            fetchReferrals(currentPage, 10);
+        }
+    }, [affiliate, currentPage]);
+
     return (
         <div className="p-8 w-full">
 
@@ -121,12 +159,22 @@ export default function Home() {
                         </tr>
                     </thead>
                     <tbody className="border-b-[1px] border-white/15">
-                        <tr>
-                            <td className="font-medium text-sm py-[11px]">John Doe</td>
-                            <td className="py-[11px]"><div className="font-medium text-xs text-white/80 text-center w-[70px] rounded-[6px] py-1 border-[1px] border-white/20">Pro</div></td>
-                            <td className="font-medium text-sm py-[11px]">$ 100.00</td>
-                            <td className="font-medium text-sm py-[11px]">$ 20.00</td>
-                        </tr>
+                        {referralsLoading ? (
+                            <tr><td colSpan={4}>Loading...</td></tr>
+                        ) : referralsError ? (
+                            <tr><td colSpan={4}>{referralsError}</td></tr>
+                        ) : referrals.length === 0 ? (
+                            <tr><td colSpan={4}>No referrals found.</td></tr>
+                        ) : (
+                            referrals.map((referral, idx) => (
+                                <tr key={idx}>
+                                    <td>{referral.name}</td>
+                                    <td>{referral.plan}</td>
+                                    <td>{referral.payAmount}</td>
+                                    <td>{referral.incentive}</td>
+                                </tr>
+                            ))
+                        )}
                     </tbody>
                 </table>
                 <div className="flex justify-center items-center mt-6">

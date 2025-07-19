@@ -71,4 +71,15 @@ export class AffiliateService {
       });
     }
   }
+
+  // Get referrals for a user
+  static async getReferrals(userId: string, page: number = 1, limit: number = 10) {
+    const referralsRef = collection(db, 'referrals');
+    const q = query(referralsRef, where('referrerId', '==', userId));
+    const querySnapshot = await getDocs(q);
+    const allReferrals = querySnapshot.docs.map(doc => doc.data());
+    const start = (page - 1) * limit;
+    const paginated = allReferrals.slice(start, start + limit);
+    return { referrals: paginated };
+  }
 } 

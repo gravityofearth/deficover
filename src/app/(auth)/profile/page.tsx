@@ -7,8 +7,10 @@ import { showToast } from "@/utils";
 import { EmailAuthProvider, GoogleAuthProvider, reauthenticateWithCredential, reauthenticateWithPopup, updatePassword, updateProfile, verifyBeforeUpdateEmail } from "firebase/auth";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 const BillingCard = () => {
+    const router = useRouter();
     return (
         <div className="flex flex-col gap-6 w-full border-white/15 border-[1px] p-8 rounded-xl bg-white/3 mt-6">
 
@@ -18,7 +20,7 @@ const BillingCard = () => {
                     <div className="font-medium text-xl">Current Plan: Basic</div>
                     <div className="text-sm leading-[18px] text-white/60">$19.99/month • Next billing: June 15, 2025</div>
                 </div>
-                <div className="text-sm font-bold text-[#7D00FE]">Change Plan</div>
+                <div className="text-sm font-bold text-[#7D00FE] hover:cursor-pointer hover:underline" onClick={() => router.push('/subscription')}>Change Plan</div>
             </div>
 
             {/* Payment Method */}
