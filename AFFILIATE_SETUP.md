@@ -29,7 +29,7 @@ Add these to your `.env.local` file:
 # Firebase Admin (for server-side operations)
 NEXT_PUBLIC_FIREBASE_PROJECT_ID=your-project-id
 NEXT_PUBLIC_FIREBASE_CLIENT_EMAIL=your-client-email
-NEXT_PUBLIC_FIREBASE_PRIVATE_KEY=your-private-key
+FIREBASE_PRIVATE_KEY=your-private-key
 
 # Base URL for referral links
 NEXT_PUBLIC_BASE_URL=https://yourdomain.com
