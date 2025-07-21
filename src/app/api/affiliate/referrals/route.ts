@@ -3,7 +3,7 @@ import { getAuth } from 'firebase-admin/auth';
 import { initializeApp, getApps, cert } from 'firebase-admin/app';
 import { AffiliateService } from '@/services/affiliate';
 import { collection, query, where, getDocs } from 'firebase/firestore';
-import { db } from '@/lib/firebase';
+import { db } from '@/services/firebase';
 
 // Initialize Firebase Admin if not already initialized
 if (!getApps().length) {

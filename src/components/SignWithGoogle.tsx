@@ -7,17 +7,21 @@ const SignWithGoogle = () => {
     const redirectUrl = searchParams.get('redirect')
     const signWithGoogle = () => {
         signInWithPopup(auth, provider)
-            .then((/**result */) => {
-                // This gives you a Google Access Token. You can use it to access the Google API.
-                // const credential = GoogleAuthProvider.credentialFromResult(result);
-                // const token = credential?.accessToken;
-                
-                // const user = result.user;
-                redirect(redirectUrl ?? "/overview")
-                // IdP data available using getAdditionalUserInfo(result)
-                // ...
-            })
-
+            .then(async (result) => {
+                // Get user info
+                const user = result.user;
+                // Add to HubSpot
+                await fetch('/api/hubspot/contact', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        email: user.email,
+                        firstname: user.displayName?.split(' ')[0] || '',
+                        lastname: user.displayName?.split(' ').slice(1).join(' ') || '',
+                    }),
+                });
+                redirect(redirectUrl ?? "/overview");
+            });
     }
     return (
         <div onClick={signWithGoogle} className="font-sm text-black">Sign with Google</div>

@@ -30,10 +30,18 @@ export default function Home() {
             return
         }
         createUserWithEmailAndPassword(auth, email.trim(), password)
-            .then((/**userCredential */) => {
-                // Signed up 
-                // const user = userCredential.user
-                redirect("/verify-email")
+            .then(async (userCredential) => {
+                // Add to HubSpot
+                await fetch('/api/hubspot/contact', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        email: email.trim(),
+                        // Add firstname/lastname if you collect them
+                    }),
+                });
+                // Redirect or show success
+                redirect('/verify-email');
             })
             .catch((error) => {
                 // const errorCode = error.code;
