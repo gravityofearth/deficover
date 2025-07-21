@@ -229,12 +229,42 @@ const ProfileCard = () => {
                     updateProfile(user!, {
                         displayName: displayName,
                         photoURL: `http://192.168.142.86:3000/api/uploads/${res.fileId}`
-                    }).then(() => setChanged(false))
+                    }).then(async () => {
+                        setChanged(false)
+                        // --- HubSpot update call ---
+                        if (user?.email) {
+                            const [firstname, ...rest] = displayName.split(' ');
+                            const lastname = rest.join(' ');
+                            await fetch(`/api/hubspot/contact/${encodeURIComponent(user.email)}`, {
+                                method: 'PUT',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({
+                                    firstname,
+                                    lastname,
+                                }),
+                            });
+                        }
+                    })
                 })
             } else {
                 updateProfile(user!, {
                     displayName: displayName,
-                }).then(() => setChanged(false))
+                }).then(async () => {
+                    setChanged(false)
+                    // --- HubSpot update call ---
+                    if (user?.email) {
+                        const [firstname, ...rest] = displayName.split(' ');
+                        const lastname = rest.join(' ');
+                        await fetch(`/api/hubspot/contact/${encodeURIComponent(user.email)}`, {
+                            method: 'PUT',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                firstname,
+                                lastname,
+                            }),
+                        });
+                    }
+                })
             }
         }
     }

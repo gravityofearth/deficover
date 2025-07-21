@@ -35,6 +35,14 @@ export class HubSpotService {
     }
   }
 
+  async updateContact(contactId: string, properties: { firstname?: string; lastname?: string }) {
+    try {
+      return await this.client.crm.contacts.basicApi.update(contactId, { properties });
+    } catch (error) {
+      console.error('Error updating HubSpot contact:', error);
+      throw error;
+    }
+  }
   // Get contact by email
   async getContactByEmail(email: string) {
     try {
