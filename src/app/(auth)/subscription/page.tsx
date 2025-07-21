@@ -170,7 +170,7 @@ export default function Home() {
 
                 {/* Plans Grid */}
                 <div className="w-full grid grid-cols-3 max-xl:grid-cols-1 max-xl:max-w-[420px] gap-4">
-                    {plans.map((plan, idx) => {
+                    {plans.map((plan) => {
                         const isCurrent = isCurrentPlan(plan.name);
                         const isPaidPlan = plan.name === 'PRO' || plan.name === 'BUSINESS';
                         const buttonText = getButtonText(plan.name);

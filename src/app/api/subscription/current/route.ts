@@ -29,7 +29,7 @@ export async function GET(request: NextRequest) {
     let decodedToken;
     try {
       decodedToken = await getAuth().verifyIdToken(token);
-    } catch (error) {
+    } catch {
       return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
     }
 

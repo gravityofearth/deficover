@@ -4,12 +4,12 @@ import Link from "next/link";
 import SignWithGoogle from "@/components/SignWithGoogle";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "@/services/firebase";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { redirect, useSearchParams } from "next/navigation";
 import { isValidEmail, showToast } from "@/utils";
 
 
-export default function Home() {
+const Home = () => {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const searchParams = useSearchParams()
@@ -78,4 +78,11 @@ export default function Home() {
             </div>
         </div>
     );
+}
+export default function Login() {
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+            <Home />
+        </Suspense>
+    )
 }

@@ -4,6 +4,7 @@ import { auth } from '@/services/firebase';
 
 export const useAffiliate = () => {
   const [user] = useAuthState(auth);
+  /* eslint-disable @typescript-eslint/no-explicit-any */
   const [affiliate, setAffiliate] = useState<any>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -39,7 +40,7 @@ export const useAffiliate = () => {
     if (!affiliate?.referralLink) return;
     try {
       await navigator.clipboard.writeText(affiliate.referralLink);
-    } catch (err) {
+    } catch {
       setError('Failed to copy link');
     }
   };

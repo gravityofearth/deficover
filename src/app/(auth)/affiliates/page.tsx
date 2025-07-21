@@ -15,7 +15,7 @@ type Referral = {
 };
 
 export default function Home() {
-    const { affiliate, loading, error, copyReferralLink } = useAffiliate();
+    const { affiliate, loading } = useAffiliate();
     const [currentPage, setCurrentPage] = useState(1);
     const totalPages = 40; // We'll update this later
     const [copied, setCopied] = useState(false);

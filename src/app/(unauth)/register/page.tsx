@@ -6,9 +6,9 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 
-export default function Home() {
+const Home = () => {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [confirmPassword, setConfirmPassword] = useState("")
@@ -30,7 +30,7 @@ export default function Home() {
             return
         }
         createUserWithEmailAndPassword(auth, email.trim(), password)
-            .then(async (userCredential) => {
+            .then(async () => {
                 // Add to HubSpot
                 await fetch('/api/hubspot/contact', {
                     method: 'POST',
@@ -86,4 +86,12 @@ export default function Home() {
             </div>
         </div>
     );
+}
+
+export default function Register() {
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+            <Home />
+        </Suspense>
+    )
 }

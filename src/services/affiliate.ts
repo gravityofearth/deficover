@@ -9,7 +9,6 @@ import {
   getDocs, 
   increment,
   serverTimestamp,
-  Timestamp 
 } from 'firebase/firestore';
 import { db } from './firebase';
 import { generateReferralCode } from '../utils/affiliate';
@@ -81,5 +80,38 @@ export class AffiliateService {
     const start = (page - 1) * limit;
     const paginated = allReferrals.slice(start, start + limit);
     return { referrals: paginated };
+  }
+
+  // Get withdrawals for a user
+  static async getWithdrawals(userId: string) {
+    // TODO: Implement actual logic to fetch withdrawals from your database
+    // Example placeholder:
+    const withdrawalsRef = collection(db, 'withdrawals');
+    const q = query(withdrawalsRef, where('userId', '==', userId));
+    const querySnapshot = await getDocs(q);
+    return querySnapshot.docs.map(doc => doc.data());
+  }
+
+  /* eslint-disable @typescript-eslint/no-explicit-any */
+  static async requestWithdrawal(userId: string, amount: number, paymentMethod: string, paymentDetails: any) {
+    // TODO: Implement actual logic to create a withdrawal request in your database
+    // Example placeholder:
+    // You might want to generate a unique withdrawalId here
+    const withdrawalRef = doc(collection(db, 'withdrawals'));
+    await setDoc(withdrawalRef, {
+      userId,
+      amount,
+      paymentMethod,
+      paymentDetails,
+      status: 'pending',
+      createdAt: serverTimestamp(),
+    });
+    return withdrawalRef.id;
+  }
+
+  static async processMaturedCommissions() {
+    // TODO: Implement logic to process matured commissions
+    // Example placeholder:
+    console.log('Processing matured commissions...');
   }
 } 

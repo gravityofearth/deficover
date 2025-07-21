@@ -52,7 +52,7 @@ export const useStripe = (): UseStripeReturn => {
           priceId,
           planName,
           isYearly,
-          referralCode,
+          ...(referralCode && { referralCode }),
         }),
       });
 

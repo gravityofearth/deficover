@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { hubspotService } from '@/services/hubspot';
 
-export async function PUT(request: NextRequest, { params }: { params: { email: string } }) {
+/* eslint-disable @typescript-eslint/no-explicit-any */
+export async function PUT(request: NextRequest, context: any) {
   try {
-    const { email } = await params;
+    const { email } = context.params;
     const { firstname, lastname } = await request.json();
 
     if (!email) {

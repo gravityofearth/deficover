@@ -44,6 +44,7 @@ export class HubSpotService {
     }
   }
   // Get contact by email
+    /* eslint-disable @typescript-eslint/no-explicit-any */
   async getContactByEmail(email: string) {
     try {
       const response = await this.client.crm.contacts.searchApi.doSearch({

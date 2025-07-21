@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
-import { auth } from '@/services/firebase';
 import { getAuth } from 'firebase-admin/auth';
 import { initializeApp, getApps, cert } from 'firebase-admin/app';
 
@@ -35,7 +34,7 @@ export async function POST(request: NextRequest) {
     let decodedToken;
     try {
       decodedToken = await getAuth().verifyIdToken(token);
-    } catch (error) {
+    } catch {
       return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
     }
 
