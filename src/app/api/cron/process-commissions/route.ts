@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { AffiliateService } from '@/services/affiliate';
 
-// This endpoint should be called by a cron job service (e.g., Vercel Cron)
+// This endpoint should be called by a cron job service
 export async function POST(request: NextRequest) {
   try {
     // Verify the request is from a legitimate cron service

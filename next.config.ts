@@ -5,7 +5,7 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       new URL("https://lh3.googleusercontent.com/**"),
-      new URL("http://192.168.142.86:3000/**"),
+      new URL(`${process.env.NEXT_PUBLIC_BASE_URL}/**`),
     ],
   },
 };

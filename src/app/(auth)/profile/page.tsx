@@ -222,13 +222,13 @@ const ProfileCard = () => {
             if (avatarFiles.length > 0) {
                 const formData = new FormData()
                 formData.append("file", avatarFiles[0])
-                fetch(`http://192.168.142.86:3000/api/upload`, {
+                fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/upload`, {
                     method: "POST",
                     body: formData
                 }).then(res => res.json()).then(res => {
                     updateProfile(user!, {
                         displayName: displayName,
-                        photoURL: `http://192.168.142.86:3000/api/uploads/${res.fileId}`
+                        photoURL: `${process.env.NEXT_PUBLIC_BASE_URL}/api/uploads/${res.fileId}`
                     }).then(async () => {
                         setChanged(false)
                         // --- HubSpot update call ---
