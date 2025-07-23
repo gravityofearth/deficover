@@ -93,7 +93,7 @@ export default function Home() {
             <div className="font-bold text-[32px] leading-[1.4]">Dashboard Overview</div>
             <div className="text-sm text-white/80">Manage your Monitor DeFi insurance protocols and market trends</div>
             <div className="grid xl:grid-cols-4 md:grid-cols-2 grid-cols-1 my-[22px] gap-4">
-                <div className="w-full h-24 bg-white/3 rounded-[7px] border-[1px] border-white/15 px-6 pt-6 pb-4 flex flex-col justify-between">
+                <div className="w-full h-32 bg-white/3 rounded-[7px] border-[1px] border-white/15 px-6 pt-6 pb-4 flex flex-col justify-between">
                     <div className="text-white/80 leading-4 text-[13px]">
                         Market IPI Average
                         <InfoTooltip
@@ -108,8 +108,15 @@ export default function Home() {
                         <div className="text-[21px] font-medium leading-6">6.5%</div>
                         <div className="px-2.5 py-1 font-semibold text-[#65C565] text-xs bg-[#65C565]/20 rounded-l-full rounded-r-full">+3.4%</div>
                     </div>
+                    <div className="w-full h-[1px] bg-[#CACACA]"></div>
+                    <div className="flex justify-between ">
+                        <div className="flex items-center">
+                            <div className="size-[7px] rounded-full bg-[#65C565] mr-[6px]"></div>
+                            <div className="text-[10px] font-medium leading-5">Updated 2 hours ago</div>
+                        </div>
+                    </div>
                 </div>
-                <div className="w-full h-24 bg-white/3 rounded-[7px] border-[1px] border-white/15 px-6 pt-6 pb-4 flex flex-col justify-between">
+                <div className="w-full h-32 bg-white/3 rounded-[7px] border-[1px] border-white/15 px-6 pt-6 pb-4 flex flex-col justify-between">
                     <div className="text-white/80 leading-4 text-[13px]">
                         Total Value Locked
                         <InfoTooltip
@@ -124,8 +131,15 @@ export default function Home() {
                         <div className="text-[21px] font-medium leading-6">$125.4M</div>
                         <div className="px-2.5 py-1 font-semibold text-[#C56565] bg-[#C56565]/20 text-xs rounded-l-full rounded-r-full">-2.5%</div>
                     </div>
+                    <div className="w-full h-[1px] bg-[#CACACA]"></div>
+                    <div className="flex justify-between ">
+                        <div className="flex items-center">
+                            <div className="size-[7px] rounded-full bg-[#65C565] mr-[6px]"></div>
+                            <div className="text-[10px] font-medium leading-5">Updated 2 hours ago</div>
+                        </div>
+                    </div>
                 </div>
-                <div className="w-full h-24 bg-white/3 rounded-[7px] border-[1px] border-white/15 px-6 pt-6 pb-4 flex flex-col justify-between">
+                <div className="w-full h-32 bg-white/3 rounded-[7px] border-[1px] border-white/15 px-6 pt-6 pb-4 flex flex-col justify-between">
                     <div className="text-white/80 leading-4 text-[13px]">
                         Active Claims
                         <InfoTooltip
@@ -139,8 +153,15 @@ export default function Home() {
                     <div className="flex justify-between items-center">
                         <div className="text-[21px] font-medium leading-6">24</div>
                     </div>
+                    <div className="w-full h-[1px] bg-[#CACACA]"></div>
+                    <div className="flex justify-between ">
+                        <div className="flex items-center">
+                            <div className="size-[7px] rounded-full bg-[#65C565] mr-[6px]"></div>
+                            <div className="text-[10px] font-medium leading-5">Updated 2 hours ago</div>
+                        </div>
+                    </div>
                 </div>
-                <div className="w-full h-24 bg-white/3 rounded-[7px] border-[1px] border-white/15 px-6 pt-6 pb-4 flex flex-col justify-between">
+                <div className="w-full h-32 bg-white/3 rounded-[7px] border-[1px] border-white/15 px-6 pt-6 pb-4 flex flex-col justify-between">
                     <div className="text-white/80 leading-4 text-[13px]">
                         Active Protocols
                         <InfoTooltip
@@ -153,6 +174,13 @@ export default function Home() {
                     </div>
                     <div className="flex justify-between items-center">
                         <div className="text-[21px] font-medium leading-6">147</div>
+                    </div>
+                    <div className="w-full h-[1px] bg-[#CACACA]"></div>
+                    <div className="flex justify-between ">
+                        <div className="flex items-center">
+                            <div className="size-[7px] rounded-full bg-[#65C565] mr-[6px]"></div>
+                            <div className="text-[10px] font-medium leading-5">Updated 2 hours ago</div>
+                        </div>
                     </div>
                 </div>
             </div>

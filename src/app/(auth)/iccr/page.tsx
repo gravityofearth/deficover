@@ -2,7 +2,7 @@ import { formatValueInLatin } from "@/utils";
 import { InsuranceData } from "@/utils/data";
 export default function Home() {
     return (
-        <div className="p-8 w-full h-[calc(100vh-67px)]"> {/* main contents */}
+        <div className="p-8 w-full"> {/* main contents */}
             <div className="font-bold text-[32px] leading-[1.4]">Claims & Coverage Ratings</div>
             <div className="text-sm text-white/80">Comprehensive analysis of protocol reliability and claim settlement performance</div>
             <div className="grid xl:grid-cols-4 md:grid-cols-2 grid-cols-1  my-[22px] gap-4">
@@ -12,11 +12,25 @@ export default function Home() {
                         <div className="text-[28px] font-bold leading-6">41</div>
                         <div className="px-2.5 py-1 font-semibold text-[#65C565] text-xs bg-[#65C565]/20 rounded-l-full rounded-r-full">+3</div>
                     </div>
+                    <div className="w-full h-[1px] bg-[#CACACA]"></div>
+                    <div className="flex justify-between ">
+                        <div className="flex items-center">
+                            <div className="size-[7px] rounded-full bg-[#65C565] mr-[6px]"></div>
+                            <div className="text-[10px] font-medium leading-5">Updated 2 hours ago</div>
+                        </div>
+                    </div>
                 </div>
                 <div className="w-full bg-white/3 rounded-[7px] border-[1px] border-white/15 p-6 flex flex-col justify-between gap-4">
                     <div className="text-white/80 leading-4 font-medium">Average Payout Ratio</div>
                     <div className="flex justify-between items-center">
                         <div className="text-[28px] font-bold leading-6">89%</div>
+                    </div>
+                    <div className="w-full h-[1px] bg-[#CACACA]"></div>
+                    <div className="flex justify-between ">
+                        <div className="flex items-center">
+                            <div className="size-[7px] rounded-full bg-[#65C565] mr-[6px]"></div>
+                            <div className="text-[10px] font-medium leading-5">Updated 2 hours ago</div>
+                        </div>
                     </div>
                 </div>
                 <div className="w-full bg-white/3 rounded-[7px] border-[1px] border-white/15 p-6 flex flex-col justify-between gap-4">
@@ -24,11 +38,25 @@ export default function Home() {
                     <div className="flex justify-between items-center">
                         <div className="text-[28px] font-bold leading-6">6.8<span className="text-[15px] text-white/80 font-normal"> days</span></div>
                     </div>
+                    <div className="w-full h-[1px] bg-[#CACACA]"></div>
+                    <div className="flex justify-between ">
+                        <div className="flex items-center">
+                            <div className="size-[7px] rounded-full bg-[#65C565] mr-[6px]"></div>
+                            <div className="text-[10px] font-medium leading-5">Updated 2 hours ago</div>
+                        </div>
+                    </div>
                 </div>
                 <div className="w-full bg-white/3 rounded-[7px] border-[1px] border-white/15 p-6 flex flex-col justify-between gap-4">
                     <div className="text-white/80 leading-4 font-medium">Active Claims</div>
                     <div className="flex justify-between items-center">
                         <div className="text-[28px] font-bold leading-6">24</div>
+                    </div>
+                    <div className="w-full h-[1px] bg-[#CACACA]"></div>
+                    <div className="flex justify-between ">
+                        <div className="flex items-center">
+                            <div className="size-[7px] rounded-full bg-[#65C565] mr-[6px]"></div>
+                            <div className="text-[10px] font-medium leading-5">Updated 2 hours ago</div>
+                        </div>
                     </div>
                 </div>
             </div>
