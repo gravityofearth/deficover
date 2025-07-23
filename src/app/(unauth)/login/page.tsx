@@ -49,7 +49,9 @@ const Home = () => {
         <div className="flex justify-center items-center w-full min-h-[100vh] bg-[#050520] text-white">
             <div className="w-[438px] rounded-xl border-white/10 border-[1px] bg-linear-to-b from-transparent via-white/3 to-white/5 px-6 pt-[31px] pb-[15px]">
                 <div className="flex justify-center mb-[11px]">
-                    <Image src={"/logo.png"} alt="logo" width={69} height={70} />
+                    <a href="https://deficover.com" target="_self" rel="noopener noreferrer">
+                        <Image src={"/logo.png"} alt="logo" width={69} height={70} className="cursor-pointer" />
+                    </a>
                 </div>
                 <div className="font-semibold text-xl text-center mb-4">Get Started</div>
                 <div className="text-white/60 text-sm text-center mb-8">Please enter your details to get started</div>
