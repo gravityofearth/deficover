@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useStripe } from '@/hooks/useStripe';
 import { useSubscription } from '@/hooks/useSubscription';
 import { auth } from "@/services/firebase";
-import { doc, getDoc } from "firebase/firestore";
+import { collection, query, where, getDocs } from "firebase/firestore";
 import { db } from "@/services/firebase";
 
 export default function Home() {
@@ -17,11 +17,14 @@ export default function Home() {
       const fetchReferralCode = async () => {
         const user = auth.currentUser;
         if (!user) return;
-        const docRef = doc(db, "affiliates", user.uid);
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-          const data = docSnap.data();
-          setReferralCode(data.referralCode || "");
+        const referralsRef = collection(db, "referrals");
+        const q = query(referralsRef, where("referredUserId", "==", user.uid));
+        const querySnapshot = await getDocs(q);
+        if (!querySnapshot.empty) {
+          const data = querySnapshot.docs[0].data();
+          if (data.referralCode) {
+            setReferralCode(data.referralCode);
+          }
         }
       };
       fetchReferralCode();

@@ -73,7 +73,7 @@ export class AffiliateService {
 
   // Get referrals for a user
   static async getReferrals(userId: string, page: number = 1, limit: number = 10) {
-    const referralsRef = collection(db, 'referrals');
+    const referralsRef = collection(db, 'subscriptions');
     const q = query(referralsRef, where('referrerId', '==', userId));
     const querySnapshot = await getDocs(q);
     const allReferrals = querySnapshot.docs.map(doc => doc.data());

@@ -61,7 +61,7 @@ export async function POST(request: NextRequest) {
           const maturityDate = new Date();
           maturityDate.setDate(maturityDate.getDate() + 30);
 
-          await db.collection("referrals").add({
+          await db.collection("subscriptions").add({
             referrerId,
             referredUserId,
             referredUserEmail,
