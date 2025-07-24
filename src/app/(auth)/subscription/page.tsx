@@ -3,17 +3,28 @@
 import { useState, useEffect } from 'react';
 import { useStripe } from '@/hooks/useStripe';
 import { useSubscription } from '@/hooks/useSubscription';
+import { auth } from "@/services/firebase";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "@/services/firebase";
 
 export default function Home() {
     const [isYearly, setIsYearly] = useState(false);
     const { loading, error, createCheckoutSession } = useStripe();
     const { subscription, loading: subscriptionLoading } = useSubscription();
-    const [referralCode, setReferralCode] = useState<string>('');
+    const [referralCode, setReferralCode] = useState<string>("");
 
     useEffect(() => {
-      const urlParams = new URLSearchParams(window.location.search);
-      const ref = urlParams.get('ref');
-      if (ref) setReferralCode(ref);
+      const fetchReferralCode = async () => {
+        const user = auth.currentUser;
+        if (!user) return;
+        const docRef = doc(db, "affiliates", user.uid);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+          setReferralCode(data.referralCode || "");
+        }
+      };
+      fetchReferralCode();
     }, []);
 
     // Plan pricing
