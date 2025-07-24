@@ -46,7 +46,14 @@ export default function Home() {
             });
             if (!res.ok) throw new Error("Failed to fetch referrals");
             const data = await res.json();
-            setReferrals(data.referrals); // or setReferrals(data.referrals) if the API returns {referrals: [...]}
+            setReferrals(
+              data.referrals.map((ref: any) => ({
+                name: ref.referredUserEmail || "N/A",
+                plan: ref.planName || "N/A",
+                payAmount: ref.subscriptionAmount ? `$${ref.subscriptionAmount.toFixed(2)}` : "N/A",
+                incentive: ref.commissionAmount ? `$${ref.commissionAmount.toFixed(2)}` : "N/A",
+              }))
+            );
         } catch (err) {
             setReferralsError(err instanceof Error ? err.message : String(err));
         } finally {
@@ -177,9 +184,6 @@ export default function Home() {
                         )}
                     </tbody>
                 </table>
-                <div className="flex justify-center items-center mt-6">
-                    <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
-                </div>
             </div>
         </div>
     );

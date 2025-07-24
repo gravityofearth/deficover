@@ -25,7 +25,7 @@ export class AffiliateService {
   // Initialize affiliate account
   static async initializeAffiliate(userId: string) {
     const referralCode = generateReferralCode();
-    const referralLink = `${process.env.NEXT_PUBLIC_BASE_URL}/register?ref=${referralCode}`;
+    const referralLink = `${process.env.NEXT_PUBLIC_BASE_URL}register?ref=${referralCode}`;
     
     const affiliateData = {
       userId,

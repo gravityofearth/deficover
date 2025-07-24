@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { initializeApp, getApps, cert } from 'firebase-admin/app';
+import { getFirestore } from "firebase-admin/firestore";
 
 // Initialize Firebase Admin if not already initialized
 if (!getApps().length) {
@@ -37,8 +38,41 @@ export async function POST(request: NextRequest) {
     switch (event.type) {
       case 'checkout.session.completed':
         const session = event.data.object as Stripe.Checkout.Session;
+        const referralCode = session.metadata?.referralCode;
         console.log('Checkout session completed:', session.id);
+        
         // Here you can update user subscription status in your database
+        const db = getFirestore();
+        const affiliatesRef = db.collection("affiliates");
+        const querySnapshot = await affiliatesRef.where("referralCode", "==", referralCode).get();
+
+        if (!querySnapshot.empty) {
+          const referrerDoc = querySnapshot.docs[0];
+          const referrerId = referrerDoc.get("userId");
+          const referredUserId = session.metadata?.userId;
+          const referredUserEmail = session.customer_email;
+          const planName = session.metadata?.planName;
+          const subscriptionAmount = session.amount_total ? session.amount_total / 100 : 0;
+
+          let commissionRate = 0.2;
+          if (planName?.toLowerCase().includes("business")) commissionRate = 0.15;
+          const commissionAmount = subscriptionAmount * commissionRate;
+
+          const maturityDate = new Date();
+          maturityDate.setDate(maturityDate.getDate() + 30);
+
+          await db.collection("referrals").add({
+            referrerId,
+            referredUserId,
+            referredUserEmail,
+            planName,
+            subscriptionAmount,
+            commissionAmount,
+            status: "pending",
+            maturityDate,
+            createdAt: new Date(),
+          });
+        }
         break;
 
       case 'customer.subscription.created':
