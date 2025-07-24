@@ -2,17 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useStripe } from '@/hooks/useStripe';
-import type { SubscriptionData } from '@/services/stripe';
-
-// Temporary subscription hook (until we fix the import issue)
-const useSubscription = () => {
-  return {
-    subscription: null as SubscriptionData | null, // For now, return null to show Free plan
-    loading: false,
-    error: null,
-    refreshSubscription: async () => {},
-  };
-};
+import { useSubscription } from '@/hooks/useSubscription';
 
 export default function Home() {
     const [isYearly, setIsYearly] = useState(false);
