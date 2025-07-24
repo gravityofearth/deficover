@@ -64,8 +64,7 @@ export async function GET(request: NextRequest) {
     const subscriptionData = {
       id: subscription.id,
       status: subscription.status,
-      // @ts-expect-error Stripe types may be outdated, but this property exists
-      currentPeriodEnd: subscription.current_period_end,
+      currentPeriodEnd: subscription.items.data[0].current_period_end,
       cancelAtPeriodEnd: subscription.cancel_at_period_end,
       planName: price.nickname || price.metadata.planName || 'Unknown Plan',
       priceId: price.id,
