@@ -1,6 +1,5 @@
 'use client'
 
-import Pagination from "@/components/Pagination";
 import { useState } from "react";
 import { useAffiliate } from "@/hooks/useAffiliate";
 import { formatCurrency } from "@/utils/affiliate";
@@ -16,16 +15,11 @@ type Referral = {
 
 export default function Home() {
     const { affiliate, loading } = useAffiliate();
-    const [currentPage, setCurrentPage] = useState(1);
-    const totalPages = 40; // We'll update this later
+    const [currentPage] = useState(1);
     const [copied, setCopied] = useState(false);
     const [referrals, setReferrals] = useState<Referral[]>([]);
     const [referralsLoading, setReferralsLoading] = useState(false);
     const [referralsError, setReferralsError] = useState<string | null>(null);
-
-    const handlePageChange = (page: number) => {
-        setCurrentPage(page);
-    };
 
     const handleCopy = () => {
         if (affiliate?.referralLink) {
@@ -35,6 +29,7 @@ export default function Home() {
         }
     };
 
+    /* eslint-disable @typescript-eslint/no-explicit-any */
     const fetchReferrals = async (page = 1, limit = 10) => {
         if (!affiliate) return;
         setReferralsLoading(true);
