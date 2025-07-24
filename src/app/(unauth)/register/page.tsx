@@ -7,6 +7,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Suspense, useState } from "react";
+import { AffiliateService } from "@/services/affiliate";
+import { collection, query, where, getDocs } from "firebase/firestore";
+import { db } from "@/services/firebase";
 
 const Home = () => {
     const [email, setEmail] = useState("")
@@ -40,6 +43,23 @@ const Home = () => {
                         // Add firstname/lastname if you collect them
                     }),
                 });
+                // Add referral logic
+                const urlParams = new URLSearchParams(window.location.search);
+                const referralCode = urlParams.get('ref');
+                if (referralCode) {
+                    const affiliatesRef = collection(db, 'affiliates');
+                    const q = query(affiliatesRef, where('referralCode', '==', referralCode));
+                    const querySnapshot = await getDocs(q);
+                    if (!querySnapshot.empty) {
+                        const referrer = querySnapshot.docs[0].data();
+                        await AffiliateService.addReferral(
+                            referrer.userId,
+                            auth.currentUser?.uid || "",
+                            auth.currentUser?.email || "",
+                            referralCode
+                        );
+                    }
+                }
                 // Redirect or show success
                 redirect('/verify-email');
             })

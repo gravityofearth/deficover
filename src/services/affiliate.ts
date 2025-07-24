@@ -114,4 +114,16 @@ export class AffiliateService {
     // Example placeholder:
     console.log('Processing matured commissions...');
   }
+
+  static async addReferral(referrerId: string, referredUserId: string, referredUserEmail: string, referralCode: string) {
+    const referralsRef = collection(db, 'referrals');
+    await setDoc(doc(referralsRef), {
+      referrerId,
+      referredUserId,
+      referredUserEmail,
+      referralCode,
+      createdAt: serverTimestamp(),
+      status: 'pending',
+    });
+  }
 } 
