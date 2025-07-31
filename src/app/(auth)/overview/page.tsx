@@ -13,7 +13,7 @@ export default function Home() {
     const [sortDirection, setSortDirection] = useState<SortDirection>("desc");
     const [showOnlyVerified, setShowOnlyVerified] = useState(false);
     const [showHighRiskOnly, setShowHighRiskOnly] = useState(false);
-    const [showInstitutionalOnly, setShowInstitutionalOnly] = useState(false);
+    // const [showInstitutionalOnly, setShowInstitutionalOnly] = useState(false);
 
     // Define institutional protocols (high TVL, verified, AA+ or AA rating)
     const institutionalProtocols = ["Nexus Mutual", "Risk Harbor", "Sherlock", "InsurAce", "Neptune Mutual", "OpenCover"];
@@ -30,9 +30,9 @@ export default function Home() {
             filtered = filtered.filter(item => item.risk_level === "High");
         }
 
-        if (showInstitutionalOnly) {
-            filtered = filtered.filter(item => institutionalProtocols.includes(item.protocol));
-        }
+        // if (showInstitutionalOnly) {
+        //     filtered = filtered.filter(item => institutionalProtocols.includes(item.protocol));
+        // }
 
         // Apply sorting
         if (sortField) {
@@ -55,10 +55,6 @@ export default function Home() {
                         aValue = a.tvl;
                         bValue = b.tvl;
                         break;
-                    case "claims":
-                        aValue = a.claims;
-                        bValue = b.claims;
-                        break;
                     default:
                         return 0;
                 }
@@ -72,7 +68,7 @@ export default function Home() {
         }
 
         return filtered;
-    }, [sortField, sortDirection, showOnlyVerified, showHighRiskOnly, showInstitutionalOnly]);
+    }, [sortField, sortDirection, showOnlyVerified, showHighRiskOnly]);
 
     const handleSort = (field: SortField) => {
         if (sortField === field) {
@@ -91,7 +87,7 @@ export default function Home() {
     return (
         <div className="p-8 w-full"> {/* main contents */}
             <div className="font-bold text-[32px] leading-[1.4]">Dashboard Overview</div>
-            <div className="text-sm text-white/80">Manage your Monitor DeFi insurance protocols and market trends</div>
+            <div className="text-sm text-white/80 my-[22px]">Manage your Monitor DeFi insurance protocols and market trends</div>
             {/* <div className="grid xl:grid-cols-4 md:grid-cols-2 grid-cols-1 my-[22px] gap-4">
                 <div className="w-full h-32 bg-white/3 rounded-[7px] border-[1px] border-white/15 px-6 pt-6 pb-4 flex flex-col justify-between">
                     <div className="text-white/80 leading-4 text-[13px]">
@@ -189,7 +185,8 @@ export default function Home() {
 
             <div className="bg-white/5 border-[1px] border-white/15 rounded-[7px] p-6 w-full overflow-auto">
                 {/* Filters Section */}
-                <div className="mb-6">
+                <div className="flex justify-between items-center">
+                    <div className="font-medium text-[17px] mb-6 sticky left-0">Top Rated DeFi Insurance</div>
                     <div className="flex flex-wrap gap-3 justify-end">
                         {/* Filter Toggles */}
                         <button
@@ -210,7 +207,7 @@ export default function Home() {
                         >
                             High Risk
                         </button>
-                        <button
+                        {/* <button
                             onClick={() => setShowInstitutionalOnly(!showInstitutionalOnly)}
                             className={`px-3 py-2 text-xs font-medium rounded-[4px] transition-all duration-200 shadow-sm hover:shadow-md ${showInstitutionalOnly
                                 ? "bg-[#6C97DE]/20 text-[#6C97DE] border border-[#6C97DE]/30 shadow-[#6C97DE]/20"
@@ -218,10 +215,9 @@ export default function Home() {
                                 }`}
                         >
                             Institutional Protocols
-                        </button>
+                        </button> */}
                     </div>
                 </div>
-                <div className="font-medium text-[17px] mb-6 sticky left-0">Top Rated DeFi Insurance</div>
                 <table className="w-full h-full overflow-x-scroll">
                     <thead className="border-b-[1px] border-white/15 sticky -top-[24px] bg-[#13122C]">
                         <tr className="text-[13px] text-[#A6A9AA]">
