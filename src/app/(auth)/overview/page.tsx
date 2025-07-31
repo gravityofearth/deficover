@@ -92,7 +92,7 @@ export default function Home() {
         <div className="p-8 w-full"> {/* main contents */}
             <div className="font-bold text-[32px] leading-[1.4]">Dashboard Overview</div>
             <div className="text-sm text-white/80">Manage your Monitor DeFi insurance protocols and market trends</div>
-            <div className="grid xl:grid-cols-4 md:grid-cols-2 grid-cols-1 my-[22px] gap-4">
+            {/* <div className="grid xl:grid-cols-4 md:grid-cols-2 grid-cols-1 my-[22px] gap-4">
                 <div className="w-full h-32 bg-white/3 rounded-[7px] border-[1px] border-white/15 px-6 pt-6 pb-4 flex flex-col justify-between">
                     <div className="text-white/80 leading-4 text-[13px]">
                         Market IPI Average
@@ -183,7 +183,7 @@ export default function Home() {
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> */}
 
 
 
@@ -267,7 +267,7 @@ export default function Home() {
                                     }}
                                 />
                             </th>
-                            <th
+                            {/* <th
                                 className="font-medium w-[10%] text-start pb-2 mb-2 cursor-pointer hover:text-white/80 transition-colors"
                                 onClick={() => handleSort("claims")}
                             >
@@ -275,7 +275,7 @@ export default function Home() {
                                 <InfoTooltip
                                     content="Total claims paid out by the protocol"
                                 />
-                            </th>
+                            </th> */}
                             <th className="font-medium w-[20%] text-start pb-2 mb-2">Action</th>
                         </tr>
                     </thead>
@@ -305,7 +305,7 @@ export default function Home() {
                                         {insurance.risk_level}
                                     </div>
                                 </td>
-                                <td className="font-medium text-sm pt-[22px]">${formatValueInLatin(insurance.claims)}</td>
+                                {/* <td className="font-medium text-sm pt-[22px]">${formatValueInLatin(insurance.claims)}</td> */}
                                 <td className="pt-[22px]">
                                     <a
                                         href={`https://app.nexusmutual.io/cover/buy/get-quote?address=${insurance.protocol.toLowerCase().replace(/\s+/g, '')}`}
