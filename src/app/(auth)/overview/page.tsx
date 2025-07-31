@@ -16,7 +16,7 @@ export default function Home() {
     // const [showInstitutionalOnly, setShowInstitutionalOnly] = useState(false);
 
     // Define institutional protocols (high TVL, verified, AA+ or AA rating)
-    const institutionalProtocols = ["Nexus Mutual", "Risk Harbor", "Sherlock", "InsurAce", "Neptune Mutual", "OpenCover"];
+    // const institutionalProtocols = ["Nexus Mutual", "Risk Harbor", "Sherlock", "InsurAce", "Neptune Mutual", "OpenCover"];
 
     const filteredAndSortedData = useMemo(() => {
         let filtered = [...InsuranceData];
