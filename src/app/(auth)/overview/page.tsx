@@ -87,7 +87,7 @@ export default function Home() {
     return (
         <div className="p-8 w-full"> {/* main contents */}
             <div className="font-bold text-[32px] leading-[1.4]">Dashboard Overview</div>
-            <div className="text-sm text-white/80 my-[22px]">Manage your Monitor DeFi insurance protocols and market trends</div>
+            <div className="text-sm text-white/80 mb-[22px]">Manage your Monitor DeFi insurance protocols and market trends</div>
             {/* <div className="grid xl:grid-cols-4 md:grid-cols-2 grid-cols-1 my-[22px] gap-4">
                 <div className="w-full h-32 bg-white/3 rounded-[7px] border-[1px] border-white/15 px-6 pt-6 pb-4 flex flex-col justify-between">
                     <div className="text-white/80 leading-4 text-[13px]">

@@ -4,7 +4,7 @@ export default function Home() {
     return (
         <div className="p-8 w-full"> {/* main contents */}
             <div className="font-bold text-[32px] leading-[1.4]">Insurance Pricing Index (IPI)</div>
-            <div className="text-sm text-white/80 my-[22px]">Real-time pricing intelligence across DeFi insurance protocols</div>
+            <div className="text-sm text-white/80 mb-[22px]">Real-time pricing intelligence across DeFi insurance protocols</div>
             {/* <div className="grid xl:grid-cols-4 md:grid-cols-2 grid-cols-1 my-[22px] gap-4">
                 <div className="w-full bg-white/3 rounded-[7px] border-[1px] border-white/15 p-6 flex flex-col justify-between gap-4">
                     <div className="text-white/80 leading-4 font-medium">Overall IPI</div>
