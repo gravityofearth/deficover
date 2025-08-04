@@ -136,8 +136,7 @@ export default function Home() {
     // Get button text for a plan
     const getButtonText = (planName: string) => {
         if (isCurrentPlan(planName)) return 'Current Plan';
-        if (planName === 'FREE') return 'Current Plan';
-        return 'Upgrade Plan';
+        return 'Choose Plan';
     };
 
     // Check if button should be disabled
