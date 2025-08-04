@@ -1,6 +1,14 @@
+"use client";
 import { formatValueInLatin } from "@/utils";
-import { InsuranceData } from "@/utils/data";
+import { InsuranceType } from "@/utils/data";
+import { useEffect, useState } from "react";
 export default function Home() {
+    const [insuranceData, setInsuranceData] = useState<InsuranceType[]>([])
+    useEffect(() => {
+        fetch(`${process.env.NEXT_PUBLIC_BASE_URL}api/data/get`, {
+            method: "GET",
+        }).then(v => v.json()).then((v) => setInsuranceData(v))
+    }, [])
     return (
         <div className="p-8 w-full"> {/* main contents */}
             <div className="font-bold text-[32px] leading-[1.4]">Claims & Coverage Ratings</div>
@@ -76,29 +84,29 @@ export default function Home() {
                         </tr>
                     </thead>
                     <tbody>
-                        {InsuranceData.map((insurance, i) =>
+                        {insuranceData.map((insurance, i) =>
                             <tr key={i}>
                                 <td className="font-medium text-sm py-[11px] bg-[#13122C] sticky left-0">
                                     <div className="flex gap-3 justify-between">
-                                        {insurance.protocol}
-                                        {insurance.verified && (
+                                        {insurance.title}
+                                        {true && (
                                             <span className="pr-2 relative group">
                                                 <svg width={20} height={20}>
                                                     <use href="#svg-verified-badge" />
                                                 </svg>
                                                 <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 text-xs text-white bg-black/80 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-10">
-                                                    Verified by DeFiCover: Meets ICCR transparency and audit standards.
+                                                    Verified by DeFiCover: Meets ICCR transparency and audit standards.``
                                                 </div>
                                             </span>
                                         )}
                                     </div>
                                 </td>
-                                <td className="py-[11px]"><div className="font-medium text-sm py-[11px] text-white">{insurance.iccr}%</div></td>
-                                <td className="py-[11px]"><div className="font-medium text-sm py-[11px] text-white">${formatValueInLatin(insurance.claims)}</div></td>
-                                <td className="py-[11px]"><div className="font-medium text-sm py-[11px] text-white">{(insurance.tvl / insurance.coverage * 100).toFixed(2)}%</div></td>
+                                <td className="py-[11px]"><div className="font-medium text-sm py-[11px] text-white">{insurance.score}%</div></td>
+                                <td className="py-[11px]"><div className="font-medium text-sm py-[11px] text-white">${formatValueInLatin(insurance.coverage)}</div></td>
+                                <td className="py-[11px]"><div className="font-medium text-sm py-[11px] text-white">{(insurance.coverage / insurance.tvl * 100).toFixed(2)}%</div></td>
                                 <td className="py-[11px]"><div className="font-medium text-sm py-[11px] text-white">${formatValueInLatin(insurance.tvl)}</div></td>
                                 {/* <td className="font-medium text-sm py-[11px] text-white">{insurance.payout_ratio}%</td> */}
-                                <td className="font-medium text-sm py-[11px] text-white">{insurance.settlement_time}</td>
+                                <td className="font-medium text-sm py-[11px] text-white">3 days</td>
                                 {/* <td className="py-[11px]"><div className="font-medium text-[13px] text-[#6FB75D] text-center w-[88px] bg-[#6FB75D]/20 rounded-[3px] py-2">Active</div></td> */}
                             </tr>)
                         }

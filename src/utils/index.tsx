@@ -46,3 +46,15 @@ export const riskStyle: { [key in RiskLevelType]: string } = {
   "Medium": "bg-yellow-500/20 text-yellow-500",
   "High": "bg-red-500/20 text-red-500"
 }
+export const score2rate = (score: number) => {
+  if (score >= 80) return "AA+"
+  if (score >= 60) return "AA"
+  if (score >= 40) return "A+"
+  return "A"
+}
+export const score2risk = (score: number) => {
+  if (score >= 80) return "Low"
+  if (score >= 40) return "Medium"
+  return "High"
+}
+export const getIPI = (v: string) => (Number(v) * 100 / 0.8991).toFixed(1)

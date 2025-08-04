@@ -1,6 +1,14 @@
-import { formatValueInLatin, riskStyle } from "@/utils";
-import { InsuranceData } from "@/utils/data";
+"use client";
+import { formatValueInLatin, getIPI, riskStyle, score2risk } from "@/utils";
+import { InsuranceType } from "@/utils/data";
+import { useEffect, useState } from "react";
 export default function Home() {
+    const [insuranceData, setInsuranceData] = useState<InsuranceType[]>([])
+    useEffect(() => {
+        fetch(`${process.env.NEXT_PUBLIC_BASE_URL}api/data/get`, {
+            method: "GET",
+        }).then(v => v.json()).then((v) => setInsuranceData(v))
+    }, [])
     return (
         <div className="p-8 w-full"> {/* main contents */}
             <div className="font-bold text-[32px] leading-[1.4]">Insurance Pricing Index (IPI)</div>
@@ -77,12 +85,12 @@ export default function Home() {
                         </tr>
                     </thead>
                     <tbody>
-                        {InsuranceData.map((insurance, i) =>
+                        {insuranceData.map((insurance, i) =>
                             <tr key={i}>
                                 <td className="font-medium text-sm py-[11px] bg-[#13122C] sticky left-0">
                                     <div className="flex gap-3 justify-between">
-                                        {insurance.protocol}
-                                        {insurance.verified && (
+                                        {insurance.title}
+                                        {true && (
                                             <span className="pr-2 relative group">
                                                 <svg width={20} height={20}>
                                                     <use href="#svg-verified-badge" />
@@ -94,10 +102,10 @@ export default function Home() {
                                         )}
                                     </div>
                                 </td>
-                                <td className="py-[11px]"><div className="font-medium text-xs text-white/80 text-center w-[230px] rounded-[6px] py-1 border-[1px] border-white/50 bg-white/5">{insurance.product_type}</div></td>
-                                <td className="font-medium text-sm py-[11px] text-white/80">{insurance.ipi}%</td>
+                                <td className="py-[11px]"><div className="font-medium text-xs text-white/80 text-center w-[230px] rounded-[6px] py-1 border-[1px] border-white/50 bg-white/5">{insurance.category}</div></td>
+                                <td className="font-medium text-sm py-[11px] text-white/80">{getIPI(insurance.min)}{Number(insurance.min) < Number(insurance.max) ? `~${getIPI(insurance.max)}` : ""}  %</td>
                                 {/* <td className="font-medium text-sm py-[11px] text-[#6FB75D]">+0.2</td> */}
-                                <td className="py-[11px]"><div className={`font-medium text-[13px] text-[#6FB75D] text-center w-[88px] bg-[#6FB75D]/20 rounded-[3px] py-2 ${riskStyle[insurance.risk_level]}`}>{insurance.risk_level}</div></td>
+                                <td className="py-[11px]"><div className={`font-medium text-[13px] text-[#6FB75D] text-center w-[88px] bg-[#6FB75D]/20 rounded-[3px] py-2 ${riskStyle[score2risk(insurance.score)]}`}>{score2risk(insurance.score)}</div></td>
                                 <td className="font-medium text-sm py-[11px]">${formatValueInLatin(insurance.tvl)}</td>
                             </tr>)
                         }

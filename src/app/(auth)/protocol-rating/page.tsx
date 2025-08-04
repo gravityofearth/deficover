@@ -1,8 +1,8 @@
 'use client'
 
 import Pagination from "@/components/Pagination";
-import { formatValueInLatin } from "@/utils";
-import { InsuranceData, InsuranceType } from "@/utils/data";
+import { formatValueInLatin, getIPI } from "@/utils";
+import { InsuranceType } from "@/utils/data";
 import { useEffect, useState } from "react";
 const CardItem = ({ insurance }: { insurance: InsuranceType }) => {
     return (
@@ -11,8 +11,8 @@ const CardItem = ({ insurance }: { insurance: InsuranceType }) => {
                 <svg width={64} height={64}><use href="#svg-samplelogo" /></svg>
                 <div className="flex flex-col gap-2 w-full">
                     <div className="text-2xl font-medium leading-6 flex gap-2">
-                        {insurance.protocol}
-                        {insurance.verified && (
+                        {insurance.title}
+                        {true && (
                             <span className="pr-2 relative group">
                                 <svg width={20} height={20}>
                                     <use href="#svg-verified-badge" />
@@ -29,14 +29,14 @@ const CardItem = ({ insurance }: { insurance: InsuranceType }) => {
             <div>
                 <div className="flex justify-between items-center mt-1 py-[6px]">
                     <div className="text-[13px] leading-4">ICCR Rating</div>
-                    <div className="px-2.5 py-1 font-semibold text-[21px] text-center rounded-l-full rounded-r-full">{insurance.iccr}</div>
+                    <div className="px-2.5 py-1 font-semibold text-[21px] text-center rounded-l-full rounded-r-full">{insurance.score}</div>
                 </div>
                 <div className="w-full h-[6px] bg-[#7D00FE]/30 rounded-full my-2">
-                    <div className="h-full bg-[#7D00FE] rounded-full" style={{ width: `${insurance.iccr}%` }}></div>
+                    <div className="h-full bg-[#7D00FE] rounded-full" style={{ width: `${insurance.score}%` }}></div>
                 </div>
                 <div className="flex justify-between">
                     <div className="text-[13px] font-medium leading-4">IPI Score</div>
-                    <div className="text-sm font-medium leading-6">{insurance.ipi}</div>
+                    <div className="text-sm font-medium leading-6">{getIPI(insurance.max)}</div>
                 </div>
             </div>
             <div className="flex flex-col gap-3">
@@ -50,11 +50,11 @@ const CardItem = ({ insurance }: { insurance: InsuranceType }) => {
                 </div>
                 <div className="flex justify-between">
                     <div className="text-sm leading-5">Premium Rate</div>
-                    <div className="text-sm leading-5">{(insurance.premiums / insurance.tvl * 100).toFixed(2)}%</div>
+                    <div className="text-sm leading-5">{(Number(getIPI(insurance.max)) * insurance.coverage / insurance.tvl / 100).toFixed(2)}%</div>
                 </div>
                 <div className="flex justify-between">
                     <div className="text-sm leading-5">Claims Ratio</div>
-                    <div className="text-sm leading-5">{(insurance.claims / insurance.tvl * 100).toFixed(2)}%</div>
+                    <div className="text-sm leading-5">{(insurance.coverage / insurance.tvl * 100).toFixed(2)}%</div>
                 </div>
             </div>
             <div className="w-full h-[1px] bg-[#CACACA]"></div>
@@ -68,18 +68,24 @@ const CardItem = ({ insurance }: { insurance: InsuranceType }) => {
     )
 }
 export default function Home() {
+    const [insuranceData, setInsuranceData] = useState<InsuranceType[]>([])
+    useEffect(() => {
+        fetch(`${process.env.NEXT_PUBLIC_BASE_URL}api/data/get`, {
+            method: "GET",
+        }).then(v => v.json()).then((v) => setInsuranceData(v))
+    }, [])
     const [currentPage, setCurrentPage] = useState(1);
-    const [slicedInsuranceData, setSlicedInsuranceData] = useState(InsuranceData.slice(0, 6));
+    const [slicedInsuranceData, setSlicedInsuranceData] = useState(insuranceData.slice(0, 6));
     const itemsPerPage = 6;
 
 
-    const totalPages = Math.ceil(InsuranceData.length / itemsPerPage);
+    const totalPages = Math.ceil(insuranceData.length / itemsPerPage);
     useEffect(() => {
         const startIndex = (currentPage - 1) * itemsPerPage;
         const endIndex = startIndex + itemsPerPage;
-        const currentInsuranceData = InsuranceData.slice(startIndex, endIndex);
+        const currentInsuranceData = insuranceData.slice(startIndex, endIndex);
         setSlicedInsuranceData(currentInsuranceData);
-    }, [currentPage])
+    }, [currentPage, insuranceData])
 
     const handlePageChange = (page: number) => {
         setCurrentPage(page);

@@ -1,15 +1,16 @@
 "use client";
 
-import { useState, useMemo } from "react";
-import { formatValueInLatin, riskStyle } from "@/utils";
-import { InsuranceData } from "@/utils/data";
+import { useState, useMemo, useEffect } from "react";
+import { formatValueInLatin, riskStyle, score2rate, score2risk } from "@/utils";
 import { InfoTooltip } from "@/components/InfoTooltip";
+import { InsuranceType } from "@/utils/data";
 
 type SortField = "rating" | "risk_level" | "tvl" | "claims" | null;
 type SortDirection = "asc" | "desc";
 
 export default function Home() {
     const [sortField, setSortField] = useState<SortField>(null);
+    const [insuranceData, setInsuranceData] = useState<InsuranceType[]>([])
     const [sortDirection, setSortDirection] = useState<SortDirection>("desc");
     const [showOnlyVerified, setShowOnlyVerified] = useState(false);
     const [showHighRiskOnly, setShowHighRiskOnly] = useState(false);
@@ -17,17 +18,21 @@ export default function Home() {
 
     // Define institutional protocols (high TVL, verified, AA+ or AA rating)
     // const institutionalProtocols = ["Nexus Mutual", "Risk Harbor", "Sherlock", "InsurAce", "Neptune Mutual", "OpenCover"];
-
+    useEffect(() => {
+        fetch(`${process.env.NEXT_PUBLIC_BASE_URL}api/data/get`, {
+            method: "GET",
+        }).then(v => v.json()).then((v) => setInsuranceData(v))
+    }, [])
     const filteredAndSortedData = useMemo(() => {
-        let filtered = [...InsuranceData];
+        let filtered = [...insuranceData];
 
         // Apply filters
-        if (showOnlyVerified) {
-            filtered = filtered.filter(item => item.verified);
-        }
+        // if (showOnlyVerified) {
+        //     filtered = filtered.filter(item => item.verified);
+        // }
 
         if (showHighRiskOnly) {
-            filtered = filtered.filter(item => item.risk_level === "High");
+            filtered = filtered.filter(item => item.score < 40);
         }
 
         // if (showInstitutionalOnly) {
@@ -42,14 +47,12 @@ export default function Home() {
 
                 switch (sortField) {
                     case "rating":
-                        const ratingOrder = { "AA+": 4, "AA": 3, "A+": 2, "A": 1 };
-                        aValue = ratingOrder[a.rating as keyof typeof ratingOrder];
-                        bValue = ratingOrder[b.rating as keyof typeof ratingOrder];
+                        aValue = a.score
+                        bValue = b.score
                         break;
                     case "risk_level":
-                        const riskOrder = { "Low": 1, "Medium": 2, "High": 3 };
-                        aValue = riskOrder[a.risk_level];
-                        bValue = riskOrder[b.risk_level];
+                        aValue = a.score
+                        bValue = b.score
                         break;
                     case "tvl":
                         aValue = a.tvl;
@@ -68,7 +71,7 @@ export default function Home() {
         }
 
         return filtered;
-    }, [sortField, sortDirection, showOnlyVerified, showHighRiskOnly]);
+    }, [sortField, sortDirection, showOnlyVerified, showHighRiskOnly, insuranceData]);
 
     const handleSort = (field: SortField) => {
         if (sortField === field) {
@@ -83,7 +86,6 @@ export default function Home() {
         if (sortField !== field) return "";
         return sortDirection === "asc" ? "↑" : "↓";
     };
-
     return (
         <div className="p-8 w-full"> {/* main contents */}
             <div className="font-bold text-[32px] leading-[1.4]">Dashboard Overview</div>
@@ -280,8 +282,8 @@ export default function Home() {
                             <tr key={i}>
                                 <td className="font-medium text-sm pt-[22px] bg-[#13122C] sticky left-0">
                                     <div className="flex gap-3 justify-between">
-                                        {insurance.protocol}
-                                        {insurance.verified && (
+                                        {insurance.title}
+                                        {true && (
                                             <span className="pr-2 relative group">
                                                 <svg width={20} height={20}>
                                                     <use href="#svg-verified-badge" />
@@ -293,23 +295,23 @@ export default function Home() {
                                         )}
                                     </div>
                                 </td>
-                                <td className="pt-[22px]"><div className="font-medium text-[13px] text-[#6C97DE] text-center w-[52px] bg-[#6C97DE]/20 rounded-[3px] py-2">{insurance.rating}</div></td>
+                                <td className="pt-[22px]"><div className="font-medium text-[13px] text-[#6C97DE] text-center w-[52px] bg-[#6C97DE]/20 rounded-[3px] py-2">{score2rate(insurance.score)}</div></td>
                                 <td className="font-medium text-sm pt-[22px]">${formatValueInLatin(insurance.tvl)}</td>
                                 <td className="font-medium text-sm pt-[22px]">${formatValueInLatin(insurance.coverage)}</td>
                                 <td className="pt-[22px]">
-                                    <div className={`font-medium text-[13px] text-center w-[88px] rounded-[3px] py-2 ${riskStyle[insurance.risk_level]}`}>
-                                        {insurance.risk_level}
+                                    <div className={`font-medium text-[13px] text-center w-[88px] rounded-[3px] py-2 ${riskStyle[score2risk(insurance.score)]}`}>
+                                        {score2risk(insurance.score)}
                                     </div>
                                 </td>
                                 {/* <td className="font-medium text-sm pt-[22px]">${formatValueInLatin(insurance.claims)}</td> */}
                                 <td className="pt-[22px]">
                                     <a
-                                        href={`https://app.nexusmutual.io/cover/buy/get-quote?address=${insurance.protocol.toLowerCase().replace(/\s+/g, '')}`}
+                                        href={insurance.url}
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         className="inline-flex items-center gap-2 px-3 py-2 text-xs font-medium text-white/80 rounded-[4px] hover:text-white transition-all duration-200"
                                     >
-                                        🔗 View on Nexus Mutual
+                                        🔗 Visit site
                                     </a>
                                 </td>
                             </tr>)
