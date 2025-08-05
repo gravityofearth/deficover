@@ -95,12 +95,12 @@ export default function Home() {
                                 <div className="px-4 py-1 font-semibold text-[#65C565] text-xs text-center bg-[#65C565]/20 rounded-l-full rounded-r-full">+3</div>
                             </div>
                         </div>
-                        <div className="flex flex-col gap-2 w-full border-[1px] border-white/15 bg-white/3 rounded-xl p-6">
+                        {/* <div className="flex flex-col gap-2 w-full border-[1px] border-white/15 bg-white/3 rounded-xl p-6">
                             <div className="text-[13px] text-white/80 font-medium leading-4">Average Payout Ratio</div>
                             <div className="flex justify-between">
                                 <div className="text-[21px] font-medium leading-6">94.2%</div>
                             </div>
-                        </div>
+                        </div> */}
                     </div>
                     <div className="flex gap-4">
                         <div className="flex flex-col gap-6 w-full border-[1px] border-white/15 bg-white/3 rounded-xl p-6">

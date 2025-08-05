@@ -1,6 +1,7 @@
 "use client";
 import { formatValueInLatin, getIPI, riskStyle, score2risk } from "@/utils";
 import { InsuranceType } from "@/utils/data";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 export default function Home() {
     const [insuranceData, setInsuranceData] = useState<InsuranceType[]>([])
@@ -72,7 +73,13 @@ export default function Home() {
                 </div>
             </div> */}
             <div className="bg-white/5 border-[1px] border-white/15 rounded-[7px] p-6 w-full overflow-auto">
-                <div className="font-medium text-[17px] mb-6 sticky left-0">Protocol IPI Rankings</div>
+                <div className="flex justify-between items-end mb-6">
+                    <div className="font-medium text-[17px] sticky left-0">Protocol IPI Rankings</div>
+                    <div className="flex items-center">
+                        <div className="size-[7px] rounded-full bg-[#65C565] mr-[6px]"></div>
+                        <div className="text-[10px] font-medium leading-5">Updated 1 hour ago</div>
+                    </div>
+                </div>
                 <table className="w-full h-full overflow-x-scroll">
                     <thead className="border-b-[1px] border-white/15 sticky -top-[24px] bg-[#13122C]">
                         <tr className="text-[13px] text-[#A6A9AA]">
@@ -88,9 +95,12 @@ export default function Home() {
                         {insuranceData.map((insurance, i) =>
                             <tr key={i}>
                                 <td className="font-medium text-sm py-[11px] bg-[#13122C] sticky left-0">
-                                    <div className="flex gap-3 justify-between">
+                                    <div className="flex gap-3">
+                                        <div className="w-8 h-8 flex justify-center items-center">
+                                            <Image alt="protocol logos" src={insurance.logo} width={32} height={32} className="rounded-full" />
+                                        </div>
                                         {insurance.title}
-                                        {true && (
+                                        {/* {true && (
                                             <span className="pr-2 relative group">
                                                 <svg width={20} height={20}>
                                                     <use href="#svg-verified-badge" />
@@ -99,7 +109,7 @@ export default function Home() {
                                                     Verified by DeFiCover: Meets ICCR transparency and audit standards.
                                                 </div>
                                             </span>
-                                        )}
+                                        )} */}
                                     </div>
                                 </td>
                                 <td className="py-[11px]"><div className="font-medium text-xs text-white/80 text-center w-[230px] rounded-[6px] py-1 border-[1px] border-white/50 bg-white/5">{insurance.category}</div></td>

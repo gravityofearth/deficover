@@ -4,6 +4,7 @@ import { useState, useMemo, useEffect } from "react";
 import { formatValueInLatin, riskStyle, score2rate, score2risk } from "@/utils";
 import { InfoTooltip } from "@/components/InfoTooltip";
 import { InsuranceType } from "@/utils/data";
+import Image from "next/image";
 
 type SortField = "rating" | "risk_level" | "tvl" | "claims" | null;
 type SortDirection = "asc" | "desc";
@@ -187,8 +188,14 @@ export default function Home() {
 
             <div className="bg-white/5 border-[1px] border-white/15 rounded-[7px] p-6 w-full overflow-auto">
                 {/* Filters Section */}
-                <div className="flex justify-between items-center">
-                    <div className="font-medium text-[17px] mb-6 sticky left-0">Top Rated DeFi Insurance</div>
+                <div className="flex justify-between items-center mb-6">
+                    <div className="">
+                        <div className="font-medium text-[17px] mb-2 sticky left-0">Top Rated DeFi Insurance</div>
+                        <div className="flex items-center">
+                            <div className="size-[7px] rounded-full bg-[#65C565] mr-[6px]"></div>
+                            <div className="text-[10px] font-medium leading-5">Updated 1 hour ago</div>
+                        </div>
+                    </div>
                     <div className="flex flex-wrap gap-3 justify-end">
                         {/* Filter Toggles */}
                         <button
@@ -281,9 +288,12 @@ export default function Home() {
                         {filteredAndSortedData.map((insurance, i) =>
                             <tr key={i}>
                                 <td className="font-medium text-sm pt-[22px] bg-[#13122C] sticky left-0">
-                                    <div className="flex gap-3 justify-between">
+                                    <div className="flex gap-3 items-center">
+                                        <div className="w-8 h-8 flex justify-center items-center">
+                                            <Image alt="protocol logos" src={insurance.logo} width={32} height={32} className="rounded-full" />
+                                        </div>
                                         {insurance.title}
-                                        {true && (
+                                        {/* {true && (
                                             <span className="pr-2 relative group">
                                                 <svg width={20} height={20}>
                                                     <use href="#svg-verified-badge" />
@@ -292,7 +302,7 @@ export default function Home() {
                                                     Verified by DeFiCover: Meets ICCR transparency and audit standards.
                                                 </div>
                                             </span>
-                                        )}
+                                        )} */}
                                     </div>
                                 </td>
                                 <td className="pt-[22px]"><div className="font-medium text-[13px] text-[#6C97DE] text-center w-[52px] bg-[#6C97DE]/20 rounded-[3px] py-2">{score2rate(insurance.score)}</div></td>
@@ -319,6 +329,7 @@ export default function Home() {
                     </tbody>
                 </table>
             </div>
+
             {/* Data Sources Footer */}
             <div className="mt-6 p-4 bg-white/3 border-[1px] border-white/10 rounded-[7px]">
                 <div className="text-xs text-white/60 mb-2 font-medium">Data Sources & Methodology:</div>

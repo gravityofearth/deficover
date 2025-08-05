@@ -3,12 +3,15 @@
 import Pagination from "@/components/Pagination";
 import { formatValueInLatin, getIPI } from "@/utils";
 import { InsuranceType } from "@/utils/data";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 const CardItem = ({ insurance }: { insurance: InsuranceType }) => {
     return (
         <div className="flex flex-col gap-3 p-6 border-[1px] border-white/15 rounded-[7px] w-full">
             <div className="w-full flex gap-[10px] items-center">
-                <svg width={64} height={64}><use href="#svg-samplelogo" /></svg>
+                <div className="w-16 h-16 flex justify-center items-center">
+                    <Image alt="protocol logos" src={insurance.logo} width={64} height={64} className="rounded-full" />
+                </div>
                 <div className="flex flex-col gap-2 w-full">
                     <div className="text-2xl font-medium leading-6 flex gap-2">
                         {insurance.title}
@@ -50,7 +53,7 @@ const CardItem = ({ insurance }: { insurance: InsuranceType }) => {
                 </div>
                 <div className="flex justify-between">
                     <div className="text-sm leading-5">Premium Rate</div>
-                    <div className="text-sm leading-5">{(Number(getIPI(insurance.max)) * insurance.coverage / insurance.tvl / 100).toFixed(2)}%</div>
+                    <div className="text-sm leading-5">{(Number(getIPI(insurance.max)) * insurance.coverage / insurance.tvl * 100).toFixed(2)}%</div>
                 </div>
                 <div className="flex justify-between">
                     <div className="text-sm leading-5">Claims Ratio</div>
@@ -61,7 +64,7 @@ const CardItem = ({ insurance }: { insurance: InsuranceType }) => {
             <div className="flex justify-between ">
                 <div className="flex items-center">
                     <div className="size-[7px] rounded-full bg-[#65C565] mr-[6px]"></div>
-                    <div className="text-[10px] font-medium leading-5">Updated 2 hours ago</div>
+                    <div className="text-[10px] font-medium leading-5">Updated 1 hours ago</div>
                 </div>
             </div>
         </div>

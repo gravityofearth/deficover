@@ -5,6 +5,7 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       new URL("https://lh3.googleusercontent.com/**"),
+      new URL("https://defi-safety-prod-strapi.s3.amazonaws.com/**"),
       new URL(`${process.env.NEXT_PUBLIC_BASE_URL}/**`),
     ],
   },
